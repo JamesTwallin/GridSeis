@@ -69,14 +69,14 @@ def perform_fft_analysis(data_source):
    
    period_dict = {}
    for freq, mag in zip(freq_bins, magnitudes):
-       if freq > 0 and freq < 0.1:  # 0-100mHz
+       if freq > 0 and freq < 0.2:  # 0-100mHz
            period_dict[f"period_{round(1/abs(freq), 3)}"] = mag
    
    return period_dict
 
 def main():
     rows = []
-    for date in pd.date_range("2024-06-01", "2025-01-01", freq="1MS"):
+    for date in pd.date_range("2024-10-01", "2025-01-01", freq="1MS"):
         df = get_raw_frequency_data(date.year, date.month)
         if df is None or df.empty:
             continue
@@ -98,8 +98,9 @@ def main():
     # Add rolling means
     fft_columns = [col for col in result_df.columns if col.startswith('period_')]
     for col in fft_columns:
-        result_df[f'{col}_6h'] = result_df[col].rolling(window='6H').mean()
-        result_df[f'{col}_24h'] = result_df[col].rolling(window='24H').mean()
+        result_df[f'{col}_6h'] = result_df[col].rolling(window='6h').mean()
+        result_df[f'{col}_12h'] = result_df[col].rolling(window='12h').mean()
+        result_df[f'{col}_24h'] = result_df[col].rolling(window='24h').mean()
     
     # # Add ratio features between FFT bands
     # for i, col1 in enumerate(fft_columns):
@@ -115,7 +116,7 @@ def main():
     fuel_data.set_index('DATETIME', inplace=True)
     fuel_data = fuel_data[['CARBON_INTENSITY']]
     
-    result_df = pd.merge_asof(result_df, fuel_data, left_index=True, right_index=True)
+    result_df['CARBON_INTENSITY'] = fuel_data['CARBON_INTENSITY']
     result_df.dropna(inplace=True)
     result_df.drop_duplicates(inplace=True)
 
@@ -129,16 +130,10 @@ def main():
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
     xgb_model = xgb.XGBRegressor(
-        n_estimators=200,
-        max_depth=3,
-        learning_rate=0.01,
-        subsample=0.8,
-        colsample_bytree=0.8,
-        random_state=42
     )
 
     xgb_model.fit(X_train, y_train) 
-    y_pred_train_xgb = xgb_model.predict(X_train)
+
     y_pred_val_xgb = xgb_model.predict(validation_df.drop(columns=['CARBON_INTENSITY']))
     plt.figure(figsize=(10, 6))
     sns.lineplot(x=validation_df.index, y=validation_df['CARBON_INTENSITY'], label="True Values")
@@ -159,6 +154,16 @@ def main():
     plt.title("XGBoost Feature Importance")
     plt.tight_layout()
     plt.savefig("feature_importance.png")
+
+    # scatter
+    y_pred_test_xgb = xgb_model.predict(X_test)
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x=y_test, y=y_pred_test_xgb)
+    plt.xlabel("True Values")
+    plt.ylabel("Predicted Values")
+    plt.title("XGBoost: True vs Predicted Carbon Intensity")
+    plt.savefig("scatter_xgb.png")
+
 
 
     
