@@ -119,17 +119,13 @@ def main():
     result_df.dropna(inplace=True)
     result_df.drop_duplicates(inplace=True)
 
-    # Log transform carbon intensity
-    result_df['CARBON_INTENSITY_LOG'] = np.log1p(result_df['CARBON_INTENSITY'])
+
 
     validation_df = result_df[result_df.index.year == 2025]
     result_df = result_df[result_df.index.year != 2025]
-    
-    # Weight higher carbon intensity samples more
-    sample_weights = result_df['CARBON_INTENSITY'] / result_df['CARBON_INTENSITY'].mean()
-    
-    X = result_df.drop(columns=['CARBON_INTENSITY', 'CARBON_INTENSITY_LOG'])
-    y = result_df['CARBON_INTENSITY_LOG']  # Train on log-transformed target
+
+    X = result_df.drop(columns=['CARBON_INTENSITY'])
+    y = result_df['CARBON_INTENSITY']  # Train on log-transformed target
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
     xgb_model = xgb.XGBRegressor(
@@ -140,11 +136,10 @@ def main():
         colsample_bytree=0.8,
         random_state=42
     )
-    xgb_model.fit(X_train, y_train, sample_weight=sample_weights.loc[X_train.index])
 
-    # Predict and inverse transform
-    y_pred_val_xgb = np.expm1(xgb_model.predict(validation_df.drop(columns=['CARBON_INTENSITY', 'CARBON_INTENSITY_LOG'])))
-
+    xgb_model.fit(X_train, y_train) 
+    y_pred_train_xgb = xgb_model.predict(X_train)
+    y_pred_val_xgb = xgb_model.predict(validation_df.drop(columns=['CARBON_INTENSITY']))
     plt.figure(figsize=(10, 6))
     sns.lineplot(x=validation_df.index, y=validation_df['CARBON_INTENSITY'], label="True Values")
     sns.lineplot(x=validation_df.index, y=y_pred_val_xgb, label="XGBoost Predictions", alpha=0.2)
