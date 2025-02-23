@@ -2,3 +2,6 @@ pandas
 matplotlib
 numpy
 scipy
+scikit-learn
+xgboost
+shap
