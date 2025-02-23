@@ -2,3 +2,4 @@
 *.xml
 *.csv
 *.idea
+*.parquet
