@@ -71,9 +71,7 @@ def perform_fft_analysis(data_source):
    
    period_dict = {}
    for freq, mag in zip(freq_bins, magnitudes):
-        # if freq > 0.001 and freq < 0.5:  # 0-100mHz
-            # if 1/freq == 10 or 1/freq == 5 or 1/freq == 7.5:
-            #     continue
+        # Ignore the DC component
             if 1/freq > 6 or 1/freq < 3: 
                 continue
             period_dict[f"period_{1/freq:.4f}"] = mag
@@ -201,19 +199,6 @@ def main():
     ax2.set_title("Carbon Intensity - 12h Moving Average")
     plt.tight_layout()
     plt.savefig("validation.png")
-
-
-
-
-    # feature importance
-    # Feature importance plot
-    plt.figure(figsize=(10, 200))  # Adjust based on number of features
-    importances = xgb_model.feature_importances_
-    feat_importances = pd.Series(importances, index=X.columns)
-    feat_importances.plot(kind='barh')
-    plt.title("XGBoost Feature Importance")
-    plt.tight_layout()
-    plt.savefig("feature_importance.png")
 
     # scatter
     y_pred_test_xgb = xgb_model.predict(X_test)
