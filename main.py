@@ -12,14 +12,10 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPRegressor
-from tabpfn import TabPFNRegressor  
+
 import xgboost as xgb
-import torch
 
 
-
-if not torch.cuda.is_available():
-    raise SystemError('GPU device not found. For fast training, please enable GPU. See section above for instructions.')
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -229,53 +225,6 @@ def main():
     # Adjust layout and save
     plt.tight_layout()
     plt.savefig("scatter_xgb.png", dpi=300, bbox_inches='tight')
-
-    # # TabPFNRegressor
-    # tabpfn_model = TabPFNRegressor(ignore_pretraining_limits=True)
-    # tabpfn_model.fit(X_train, y_train)
-    # y_pred_val_tabpfn = tabpfn_model.predict(validation_df.drop(columns=['CARBON_INTENSITY']))
-    # plt.figure(figsize=(20, 6))
-    # sns.lineplot(x=validation_df.index, y=validation_df['CARBON_INTENSITY'], label="True Values")
-    # sns.lineplot(x=validation_df.index, y=y_pred_val_tabpfn, label="TabPFN Predictions", alpha=0.2)
-    # # smooth the plot with a Savitzky-Golay filter
-    # y_pred_val_tabpfn_smooth = signal.savgol_filter(y_pred_val_tabpfn, 51, 3)
-    # sns.lineplot(x=validation_df.index, y=y_pred_val_tabpfn_smooth, label="TabPFN Predictions (Smoothed)")
-    # plt.xlabel("Timestamp")
-    # plt.ylabel("Carbon Intensity")
-    # plt.title("TabPFN: True vs Predicted Carbon Intensity")
-    # plt.savefig("tabpfn_carbon_intensity.png")
-
-    # # scatter
-    # y_pred_test_tabpfn = tabpfn_model.predict(X_test)
-    # fig, ax = plt.subplots(figsize=(6, 6))
-
-    # # Create scatter plot
-    # ax.scatter(y_test, y_pred_test_tabpfn, color="#16BAC5", alpha=0.5, zorder=2)
-    # # plot a 1:1
-    # ax.plot([0, 300], [0, 300], color='gray', linestyle='--', zorder=3)
-
-    # # Configure axes
-    # ax.set_xlabel("Actual GB Carbon Intensity (gCO2/kWh)")
-    # ax.set_ylabel("Predicted GB Carbon Intensity (gCO2/kWh)")
-
-    # # Remove top and right spines
-    # for spine in ['top', 'right']:
-    #     ax.spines[spine].set_visible(False)
-
-    # # Add grid
-    # ax.yaxis.grid(color='gray', linestyle='dashed', zorder=0)
-    # ax.xaxis.grid(color='gray', linestyle='dashed', zorder=0)
-
-    # # Set title above the figure
-    # fig.suptitle("Grid frequency data can be used to predict carbon intensity",
-    #             x=0.02,
-    #             horizontalalignment='left',
-    #             verticalalignment='bottom',
-    #             fontsize=12,
-    #             fontweight='bold')
-    
-    # plt.tight_layout()
-    # plt.savefig("scatter_tabpfn.png", dpi=300, bbox_inches='tight')
 
 
 
