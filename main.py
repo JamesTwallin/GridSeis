@@ -215,7 +215,7 @@ def main():
     plt.savefig("scatter_xgb.png", dpi=300, bbox_inches='tight')
 
     # # TabPFNRegressor
-    tabpfn_model = TabPFNRegressor(ignore_pretraining_limits=True)
+    tabpfn_model = AutoTabPFNRegressor(ignore_pretraining_limits=True)
     tabpfn_model.fit(X_train, y_train)
     y_pred_val_tabpfn = tabpfn_model.predict(validation_df.drop(columns=['CARBON_INTENSITY']))
     plt.figure(figsize=(20, 6))

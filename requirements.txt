@@ -6,3 +6,4 @@ scikit-learn
 xgboost
 tabpfn
 torch==2.2.0+cu121 --extra-index-url https://download.pytorch.org/whl/cu121
+hyperopt
