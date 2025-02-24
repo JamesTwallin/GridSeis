@@ -4,7 +4,7 @@ import pandas as pd
 import os
 import logging
 import numpy as np
-from scipy import signal
+
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -82,7 +82,7 @@ def perform_fft_analysis(data_source):
 
 def main():
     rows = []
-    for date in pd.date_range("2024-10-01", "2025-01-01", freq="1MS"):
+    for date in pd.date_range("2023-07-01", "2025-01-01", freq="1MS"):
         df = get_raw_frequency_data(date.year, date.month)
         if df is None or df.empty:
             continue
@@ -103,17 +103,11 @@ def main():
         
     fft_columns = [col for col in result_df.columns if col.startswith('period_')]
 
-    # # Create new features in separate DataFrames
-    # shifted_df = pd.DataFrame({
-    #     f'{col}_shift_5': result_df[col].shift(5)
+    # rolling_mean_df = pd.DataFrame({
+    #     f'{col}_{window}_mean': result_df[col].rolling(window).mean()
     #     for col in fft_columns
+    #     for window in ['1h', '3h', '6h']
     # })
-
-    rolling_mean_df = pd.DataFrame({
-        f'{col}_{window}_mean': result_df[col].rolling(window).mean()
-        for col in fft_columns
-        for window in ['1h', '3h', '6h']
-    })
 
     rolling_max_df = pd.DataFrame({
         f'{col}_{window}_max': result_df[col].rolling(window).max()
@@ -121,11 +115,26 @@ def main():
         for window in ['1h', '3h', '6h']
     })
 
+    rolling_min_df = pd.DataFrame({
+        f'{col}_{window}_min': result_df[col].rolling(window).min()
+        for col in fft_columns
+        for window in ['1h', '3h', '6h']
+    })
+
+    # sine day of year
+    result_df['sin_day'] = np.sin(2 * np.pi * result_df.index.dayofyear / 365)
+    result_df['cos_day'] = np.cos(2 * np.pi * result_df.index.dayofyear / 365)
+
+    # second of day
+    result_df['sin_second'] = np.sin(2 * np.pi * result_df.index.second / 86400)
+    result_df['cos_second'] = np.cos(2 * np.pi * result_df.index.second / 86400)
+
+
 
 
     # Drop original columns and combine with new features
     result_df = result_df.drop(columns=fft_columns)
-    result_df = pd.concat([result_df, rolling_mean_df, rolling_max_df], axis=1)
+    result_df = pd.concat([result_df, rolling_min_df, rolling_max_df], axis=1)
 
 
 
@@ -148,8 +157,8 @@ def main():
 
 
 
-    validation_df = result_df[result_df.index.year == 2025]
-    result_df = result_df[result_df.index.year != 2025]
+    validation_df = result_df[result_df.index > "2024-12-01"]
+    result_df = result_df[result_df.index <= "2024-12-01"]
 
     X = result_df.drop(columns=['CARBON_INTENSITY'])
     y = result_df['CARBON_INTENSITY']
@@ -166,20 +175,35 @@ def main():
     y_pred_val_xgb = xgb_model.predict(validation_df.drop(columns=['CARBON_INTENSITY']))
     # make a series
 
-    plt.figure(figsize=(20, 6))
-    sns.lineplot(x=validation_df.index, y=validation_df['CARBON_INTENSITY'], label="True Values")
-    sns.lineplot(x=validation_df.index, y=y_pred_val_xgb, label="XGBoost Predictions", alpha=0.2)
-    # plot the max and min of the predictions
+    fig = plt.figure(figsize=(20, 6))
+    ax1 = fig.add_subplot(211)
+    ax2 = fig.add_subplot(212)
+    ax1.plot(validation_df.index, validation_df['CARBON_INTENSITY'], label="True Values", color='black')
+    ax1.plot(validation_df.index, y_pred_val_xgb, label="XGBoost Predictions", alpha=0.5, color='red')
+    
+    ax1.set_xlabel("Timestamp")
+    ax1.set_ylabel("Carbon Intensity")
 
-    # smooth the plot with a Savitzky-Golay filter
-    y_pred_val_xgb_smooth = signal.savgol_filter(y_pred_val_xgb, 51, 3)
-    sns.lineplot(x=validation_df.index, y=y_pred_val_xgb_smooth, label="XGBoost Predictions (Smoothed)")
+    # remove the long movign average
+
+    ax2.plot(validation_df.index, validation_df['CARBON_INTENSITY'] - validation_df['CARBON_INTENSITY'].rolling('12h').mean(), label="True Values", color='black')
+    # turn into series
+    y_pred_val_xgb = pd.Series(y_pred_val_xgb, index=validation_df.index)
+    corrected = y_pred_val_xgb - y_pred_val_xgb.rolling('12h').mean()
+    smoothed = corrected.rolling('1h').mean()
+    ax2.plot(validation_df.index, smoothed, label="XGBoost Predictions", alpha=0.5, color='red')
+
+    # smooth the data
+    
+
+    ax2.set_xlabel("Timestamp")
+    ax2.set_ylabel("Carbon Intensity")
+    ax2.set_title("Carbon Intensity - 12h Moving Average")
+    plt.tight_layout()
+    plt.savefig("validation.png")
 
 
-    plt.xlabel("Timestamp")
-    plt.ylabel("Carbon Intensity")
-    plt.title("XGBoost: True vs Predicted Carbon Intensity")
-    plt.savefig("xgb_carbon_intensity.png")
+
 
     # feature importance
     # Feature importance plot
