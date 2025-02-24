@@ -76,10 +76,10 @@ def perform_fft_analysis(data_source):
    
    period_dict = {}
    for freq, mag in zip(freq_bins, magnitudes):
-        if freq > 0.001 and freq < 0.5:  # 0-100mHz
-            if 1/freq == 10 or 1/freq == 5 or 1/freq == 7.5:
-                continue
-            if 1/freq > 60 or 1/freq < 3: 
+        # if freq > 0.001 and freq < 0.5:  # 0-100mHz
+            # if 1/freq == 10 or 1/freq == 5 or 1/freq == 7.5:
+            #     continue
+            if 1/freq > 6 or 1/freq < 3: 
                 continue
             period_dict[f"period_{1/freq:.4f}"] = mag
    
@@ -87,7 +87,7 @@ def perform_fft_analysis(data_source):
 
 def main():
     rows = []
-    for date in pd.date_range("2024-06-01", "2025-01-01", freq="1MS"):
+    for date in pd.date_range("2024-10-01", "2025-01-01", freq="1MS"):
         df = get_raw_frequency_data(date.year, date.month)
         if df is None or df.empty:
             continue
@@ -117,7 +117,7 @@ def main():
     rolling_df = pd.DataFrame({
         f'{col}_{window}_mean': result_df[col].rolling(window).mean()
         for col in fft_columns
-        for window in ['1h','2h','3h', '6h']
+        for window in ['3h']
     })
 
     # Drop original columns and combine with new features
@@ -181,27 +181,86 @@ def main():
 
     # scatter
     y_pred_test_xgb = xgb_model.predict(X_test)
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(x=y_test, y=y_pred_test_xgb)
-    plt.xlabel("True Values")
-    plt.ylabel("Predicted Values")
-    plt.title("XGBoost: True vs Predicted Carbon Intensity")
-    plt.savefig("scatter_xgb.png")
+    fig, ax = plt.subplots(figsize=(6, 6))
+
+    # Create scatter plot
+    ax.scatter(y_test, y_pred_test_xgb, color="#16BAC5", alpha=0.1, zorder=3)
+    # plot a 1:1
+    ax.plot([0, 300], [0, 300], color='gray', linestyle='--', zorder=2)
+    
+
+    # Configure axes
+    ax.set_xlabel("Actual GB Carbon Intensity (gCO2/kWh)")
+    ax.set_ylabel("Predicted GB Carbon Intensity (gCO2/kWh)")
+
+    # Remove top and right spines
+    for spine in ['top', 'right']:
+        ax.spines[spine].set_visible(False)
+
+    # Add grid
+    ax.yaxis.grid(color='gray', linestyle='dashed', zorder=0)
+    ax.xaxis.grid(color='gray', linestyle='dashed', zorder=0)
+
+    # Set title above the figure
+    fig.suptitle("Grid frequency data can be used to predict carbon intensity",
+                x=0.02,
+                horizontalalignment='left',
+                verticalalignment='bottom',
+                fontsize=12,
+                fontweight='bold',
+                transform=fig.transFigure)
+
+    # Adjust layout and save
+    plt.tight_layout()
+    plt.savefig("scatter_xgb.png", dpi=300, bbox_inches='tight')
 
     # # TabPFNRegressor
-    # tabpfn_model = TabPFNRegressor(ignore_pretraining_limits=True)
-    # tabpfn_model.fit(X_train, y_train)
-    # y_pred_val_tabpfn = tabpfn_model.predict(validation_df.drop(columns=['CARBON_INTENSITY']))
-    # plt.figure(figsize=(20, 6))
-    # sns.lineplot(x=validation_df.index, y=validation_df['CARBON_INTENSITY'], label="True Values")
-    # sns.lineplot(x=validation_df.index, y=y_pred_val_tabpfn, label="TabPFN Predictions", alpha=0.2)
-    # # smooth the plot with a Savitzky-Golay filter
-    # y_pred_val_tabpfn_smooth = signal.savgol_filter(y_pred_val_tabpfn, 51, 3)
-    # sns.lineplot(x=validation_df.index, y=y_pred_val_tabpfn_smooth, label="TabPFN Predictions (Smoothed)")
-    # plt.xlabel("Timestamp")
-    # plt.ylabel("Carbon Intensity")
-    # plt.title("TabPFN: True vs Predicted Carbon Intensity")
-    # plt.savefig("tabpfn_carbon_intensity.png")
+    tabpfn_model = TabPFNRegressor(ignore_pretraining_limits=True)
+    tabpfn_model.fit(X_train, y_train)
+    y_pred_val_tabpfn = tabpfn_model.predict(validation_df.drop(columns=['CARBON_INTENSITY']))
+    plt.figure(figsize=(20, 6))
+    sns.lineplot(x=validation_df.index, y=validation_df['CARBON_INTENSITY'], label="True Values")
+    sns.lineplot(x=validation_df.index, y=y_pred_val_tabpfn, label="TabPFN Predictions", alpha=0.2)
+    # smooth the plot with a Savitzky-Golay filter
+    y_pred_val_tabpfn_smooth = signal.savgol_filter(y_pred_val_tabpfn, 51, 3)
+    sns.lineplot(x=validation_df.index, y=y_pred_val_tabpfn_smooth, label="TabPFN Predictions (Smoothed)")
+    plt.xlabel("Timestamp")
+    plt.ylabel("Carbon Intensity")
+    plt.title("TabPFN: True vs Predicted Carbon Intensity")
+    plt.savefig("tabpfn_carbon_intensity.png")
+
+    # scatter
+    y_pred_test_tabpfn = tabpfn_model.predict(X_test)
+    fig, ax = plt.subplots(figsize=(6, 6))
+
+    # Create scatter plot
+    ax.scatter(y_test, y_pred_test_tabpfn, color="#16BAC5", alpha=0.5, zorder=2)
+    # plot a 1:1
+    ax.plot([0, 300], [0, 300], color='gray', linestyle='--', zorder=3)
+
+    # Configure axes
+    ax.set_xlabel("Actual GB Carbon Intensity (gCO2/kWh)")
+    ax.set_ylabel("Predicted GB Carbon Intensity (gCO2/kWh)")
+
+    # Remove top and right spines
+    for spine in ['top', 'right']:
+        ax.spines[spine].set_visible(False)
+
+    # Add grid
+    ax.yaxis.grid(color='gray', linestyle='dashed', zorder=0)
+    ax.xaxis.grid(color='gray', linestyle='dashed', zorder=0)
+
+    # Set title above the figure
+    fig.suptitle("Grid frequency data can be used to predict carbon intensity",
+                x=0.02,
+                horizontalalignment='left',
+                verticalalignment='bottom',
+                fontsize=12,
+                fontweight='bold')
+    
+    plt.tight_layout()
+    plt.savefig("scatter_tabpfn.png", dpi=300, bbox_inches='tight')
+
 
 
 
