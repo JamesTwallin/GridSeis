@@ -1,82 +1,22 @@
-import requests
-from requests.exceptions import HTTPError
 import pandas as pd
-import os
 import logging
 import numpy as np
 
-import seaborn as sns
 import matplotlib.pyplot as plt
+
 
 # Machine Learning
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.neural_network import MLPRegressor
 
 import xgboost as xgb
 
+from helpers import get_raw_frequency_data, perform_fft_analysis, get_national_grid_data
 
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
-def get_national_grid_data():
-    local_file = "df_fuel_ckan.csv"
-    url = "https://api.neso.energy/dataset/88313ae5-94e4-4ddc-a790-593554d8c6b9/resource/f93d1835-75bc-43e5-84ad-12472b180a98/download/df_fuel_ckan.csv"
-    
-    if os.path.exists(local_file):
-        logging.info(f"Loading data from local file: {local_file}")
-        return pd.read_csv(local_file)
-    
-    logging.info(f"Downloading data from {url}")
-    try:
-        response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
-        response.raise_for_status()
-        
-        with open(local_file, "wb") as file:
-            file.write(response.content)
-        
-        return pd.read_csv(local_file)
-    except HTTPError as e:
-        logging.error(f"HTTP Error: {e}")
-    except Exception as e:
-        logging.error(f"Error: {e}")
-    
-    return None
 
-def get_raw_frequency_data(year, month):
-    file_path = f"raw_data/fnew-{year}-{month}.parquet"
-    if os.path.exists(file_path):
-        return pd.read_parquet(file_path)
-    
-    csv_path = f"raw_data/fnew-{year}-{month}.csv"
-    if not os.path.exists("raw_data"):
-        os.makedirs("raw_data")
-    
-    try:
-        df = pd.read_csv(csv_path)
-        df.to_parquet(file_path, index=False)
-        os.remove(csv_path)
-        return df
-    except Exception as e:
-        logging.error(f"Error loading raw data for {year}-{month}: {e}")
-        return None
-
-def perform_fft_analysis(data_source):
-   fs = 1  # 1 Hz sampling rate
-   values = data_source['f'].values - np.mean(data_source['f'].values)
-   fft_result = np.fft.fft(values)
-   magnitudes = np.abs(fft_result[:len(fft_result)//2])
-   freq_bins = np.fft.fftfreq(len(values), d=1/fs)[:len(values)//2]
-   
-   period_dict = {}
-   for freq, mag in zip(freq_bins, magnitudes):
-        # Ignore the DC component
-            if 1/freq > 6 or 1/freq < 3: 
-                continue
-            period_dict[f"period_{1/freq:.4f}"] = mag
-   
-   return period_dict
 
 def main():
     rows = []
@@ -95,49 +35,40 @@ def main():
             except Exception as e:
                 logging.error(f"Error processing block at index {i}: {e}")
     
-    result_df = pd.DataFrame(rows)
-    result_df['timestamp'] = pd.to_datetime(result_df['timestamp'])
-    result_df.set_index('timestamp', inplace=True)
-        
-    fft_columns = [col for col in result_df.columns if col.startswith('period_')]
+    fft_df = pd.DataFrame(rows)
+    fft_df['timestamp'] = pd.to_datetime(fft_df['timestamp'])
+    fft_df.set_index('timestamp', inplace=True)
 
-    # rolling_mean_df = pd.DataFrame({
-    #     f'{col}_{window}_mean': result_df[col].rolling(window).mean()
-    #     for col in fft_columns
-    #     for window in ['1h', '3h', '6h']
-    # })
+    fft_columns = fft_df.columns
+        
+
 
     rolling_max_df = pd.DataFrame({
-        f'{col}_{window}_max': result_df[col].rolling(window).max()
+        f'{col}_{window}_max': fft_df[col].rolling(window).max()
         for col in fft_columns
         for window in ['1h', '3h', '6h']
     })
 
     rolling_min_df = pd.DataFrame({
-        f'{col}_{window}_min': result_df[col].rolling(window).min()
+        f'{col}_{window}_min': fft_df[col].rolling(window).min()
         for col in fft_columns
         for window in ['1h', '3h', '6h']
     })
 
-    # sine day of year
-    result_df['sin_day'] = np.sin(2 * np.pi * result_df.index.dayofyear / 365)
-    result_df['cos_day'] = np.cos(2 * np.pi * result_df.index.dayofyear / 365)
+    # # sine day of year
+    # result_df['sin_day'] = np.sin(2 * np.pi * result_df.index.dayofyear / 365)
+    # result_df['cos_day'] = np.cos(2 * np.pi * result_df.index.dayofyear / 365)
 
     # second of day
-    result_df['sin_second'] = np.sin(2 * np.pi * result_df.index.second / 86400)
-    result_df['cos_second'] = np.cos(2 * np.pi * result_df.index.second / 86400)
+    fft_df['sin_second'] = np.sin(2 * np.pi * fft_df.index.second / 86400)
+    fft_df['cos_second'] = np.cos(2 * np.pi * fft_df.index.second / 86400)
 
 
 
 
     # Drop original columns and combine with new features
-    result_df = result_df.drop(columns=fft_columns)
-    result_df = pd.concat([result_df, rolling_min_df, rolling_max_df], axis=1)
-
-
-
-
-
+    # result_df = result_df.drop(columns=fft_columns)
+    fft_df = pd.concat([fft_df, rolling_min_df, rolling_max_df], axis=1)
 
     
     fuel_data = get_national_grid_data()
@@ -149,23 +80,22 @@ def main():
     fuel_data.set_index('DATETIME', inplace=True)
     fuel_data = fuel_data[['CARBON_INTENSITY']]
     
-    result_df['CARBON_INTENSITY'] = fuel_data['CARBON_INTENSITY']
-    result_df.dropna(inplace=True)
-    result_df.drop_duplicates(inplace=True)
+    fft_df['CARBON_INTENSITY'] = fuel_data['CARBON_INTENSITY']
+    fft_df.dropna(inplace=True)
+    fft_df.drop_duplicates(inplace=True)
 
 
 
-    validation_df = result_df[result_df.index > "2024-12-01"]
-    result_df = result_df[result_df.index <= "2024-12-01"]
+    validation_df = fft_df[fft_df.index > "2024-12-01"]
+    fft_df = fft_df[fft_df.index <= "2024-12-01"]
 
-    X = result_df.drop(columns=['CARBON_INTENSITY'])
-    y = result_df['CARBON_INTENSITY']
+    X = fft_df.drop(columns=['CARBON_INTENSITY'])
+    y = fft_df['CARBON_INTENSITY']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
     xgb_model = xgb.XGBRegressor(
         # use gpu
-        tree_method='gpu_hist',
-        gpu_id=0,
+        device = "cuda",
     )
 
     xgb_model.fit(X_train, y_train) 
@@ -234,8 +164,6 @@ def main():
     # Adjust layout and save
     plt.tight_layout()
     plt.savefig("scatter_xgb.png", dpi=300, bbox_inches='tight')
-
-
 
 
 
