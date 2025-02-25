@@ -20,7 +20,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 
 def main():
     rows = []
-    for date in pd.date_range("2023-07-01", "2025-01-01", freq="1MS"):
+    for date in pd.date_range("2023-07-01", "2024-12-01", freq="1MS"):
         df = get_raw_frequency_data(date.year, date.month)
         if df is None or df.empty:
             continue

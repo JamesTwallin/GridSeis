@@ -38,14 +38,16 @@ def perform_fft_analysis(data_source):
    fft_result = fft_result * (2.0 / np.sum(window))
    
    magnitudes = np.abs(fft_result[:len(fft_result)//2])
+   # normalize magnitude
    freq_bins = np.fft.fftfreq(len(values), d=1/fs)[:len(values)//2]
    
    freq_dict = {}
    for freq, mag in zip(freq_bins, magnitudes):
         # Ignore the DC component
-        if freq > 0:  # Avoid division by zero
+        if freq > 0.1:
             freq_dict[f"{freq:.4f}"] = mag
    
+
    return freq_dict
 
 def get_national_grid_data():
