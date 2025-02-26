@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 
 def create_combined_plot(fft_df_period, carbon_df_period, period_label, filename):
     """Create a combined plot of FFT heatmap and carbon intensity data for a given period."""
-    fig = plt.figure(figsize=(15, 8))
+    fig = plt.figure(figsize=(10, 8))
     
     # Create a gridspec with better height ratios and spacing
     gs = fig.add_gridspec(3, 1, height_ratios=[4, 0.1, 2], hspace=0.5)
@@ -62,7 +62,7 @@ def create_combined_plot(fft_df_period, carbon_df_period, period_label, filename
     ax2.set_ylabel('Carbon Intensity (gCO2/kWh)')
     ax2.grid(True, alpha=0.3, linestyle='--')
     
-    plt.subplots_adjust(left=0.07, right=0.95, top=0.9, bottom=0.15)
+    plt.subplots_adjust(left=0.10, right=0.95, top=0.9, bottom=0.15)
     
     # Add suptitle aligned with subplot titles
     fig.suptitle('Grid Frequency Spectral Analysis and Carbon Intensity', 
@@ -108,25 +108,7 @@ if __name__ == "__main__":
     # Format timestamps
     fft_df.index = fft_df.index.strftime('%Y-%m-%dT%H:%M:%SZ')
     
-    # Create full heatmap
-    fig = plt.figure(figsize=(20, 10))
-    ax1 = fig.add_subplot(111)
-    
-    # Generate the heatmap with y-axis inverted
-    sns.heatmap(fft_df.T, cmap='viridis', ax=ax1, 
-                robust=True, cbar_kws={'label': 'Log Magnitude'})
-    
-    # Flip the y-axis 
-    ax1.invert_yaxis()
-    
-    # Add labels and title
-    ax1.set_xlabel('Timestamp')
-    ax1.set_ylabel('Frequency (Hz)')
-    ax1.set_title('FFT Analysis: Frequency Components Over Time')
-    
-    plt.tight_layout()
-    fig.savefig('plots/fft_heatmap.png', dpi=300)
-    
+
     # Process January data
     fft_df_jan = fft_df.loc['2025-01-22':'2025-01-31']
     carbon_df_jan = carbon_intensity_df.loc['2025-01-22':'2025-01-31']

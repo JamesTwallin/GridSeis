@@ -2,28 +2,26 @@ import pandas as pd
 import logging
 import numpy as np
 import os
-
 import matplotlib.pyplot as plt
-
+import pickle
 
 # Machine Learning
 from sklearn.model_selection import train_test_split
-
 import xgboost as xgb
 
 from helpers import get_raw_frequency_data, perform_fft_analysis, get_national_grid_data
-
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 
-
-def main():
+def prepare_fft_data(start_date, end_date):
+    """Process raw frequency data and extract FFT features"""
     if not os.path.exists("plots"):
         os.makedirs("plots")
+        
     rows = []
-    for date in pd.date_range("2023-07-01", "2024-12-01", freq="1MS"):
+    for date in pd.date_range(start_date, end_date, freq="1MS"):
         df = get_raw_frequency_data(date.year, date.month)
         if df is None or df.empty:
             continue
@@ -41,11 +39,15 @@ def main():
     fft_df = pd.DataFrame(rows)
     fft_df['timestamp'] = pd.to_datetime(fft_df['timestamp'])
     fft_df.set_index('timestamp', inplace=True)
+    
+    return fft_df
 
+
+def add_features(fft_df):
+    """Add derived features to the dataset"""
     fft_columns = fft_df.columns
-        
-
-
+    
+    # Create rolling window features
     rolling_max_df = pd.DataFrame({
         f'{col}_{window}_max': fft_df[col].rolling(window).max()
         for col in fft_columns
@@ -58,24 +60,22 @@ def main():
         for window in ['1h', '3h', '6h']
     })
 
-
-
-    # second of day
+    # Add cyclical time features
     fft_df['sin_second'] = np.sin(2 * np.pi * fft_df.index.second / 86400)
     fft_df['cos_second'] = np.cos(2 * np.pi * fft_df.index.second / 86400)
 
-
-
-
-    # Drop original columns and combine with new features
-    # result_df = result_df.drop(columns=fft_columns)
+    # Combine all features
     fft_df = pd.concat([fft_df, rolling_min_df, rolling_max_df], axis=1)
-
     
+    return fft_df
+
+
+def merge_with_carbon_data(fft_df):
+    """Merge FFT data with carbon intensity data"""
     fuel_data = get_national_grid_data()
     if fuel_data is None:
-        logging.error("Failed to load fuel data. Exiting.")
-        return
+        logging.error("Failed to load fuel data.")
+        return None
     
     fuel_data['DATETIME'] = pd.to_datetime(fuel_data['DATETIME'])
     fuel_data.set_index('DATETIME', inplace=True)
@@ -84,78 +84,109 @@ def main():
     fft_df['CARBON_INTENSITY'] = fuel_data['CARBON_INTENSITY']
     fft_df.dropna(inplace=True)
     fft_df.drop_duplicates(inplace=True)
+    
+    return fft_df
 
 
+def train_model(fft_df, validation_date):
+    if not os.path.exists("models"):
+        os.makedirs("models")
+    # get the pickle file
 
-    validation_df = fft_df[fft_df.index > "2024-12-01"]
-    fft_df = fft_df[fft_df.index <= "2024-12-01"]
+    """Train XGBoost model and split data"""
+    validation_df = fft_df[fft_df.index > validation_date]
+    training_df = fft_df[fft_df.index <= validation_date]
 
-    X = fft_df.drop(columns=['CARBON_INTENSITY'])
-    y = fft_df['CARBON_INTENSITY']
+    X = training_df.drop(columns=['CARBON_INTENSITY'])
+    y = training_df['CARBON_INTENSITY']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
-    xgb_model = xgb.XGBRegressor(
-        # use gpu
-        device = "cuda",
-    )
+    if os.path.exists("models/xgb_model.pkl"):
+        with open("models/xgb_model.pkl", "rb") as f:
+            xgb_model = pickle.load(f)
+    else:
+        xgb_model = xgb.XGBRegressor(device="cuda")
+        xgb_model.fit(X_train, y_train)
+        with open("models/xgb_model.pkl", "wb") as f:
+            pickle.dump(xgb_model, f)
 
-    xgb_model.fit(X_train, y_train) 
+    return xgb_model, X_test, y_test, validation_df
 
-    y_pred_val_xgb = xgb_model.predict(validation_df.drop(columns=['CARBON_INTENSITY']))
-    # make a series
 
-    fig = plt.figure(figsize=(20, 6))
+def plot_validation_results(validation_df, y_pred_val):
+    """Create validation plots with original and detrended data"""
+    fig = plt.figure(figsize=(10, 8))
     ax1 = fig.add_subplot(211)
     ax2 = fig.add_subplot(212)
+    
+    # Original data plot
     ax1.plot(validation_df.index, validation_df['CARBON_INTENSITY'], label="True Values", color='black')
-    ax1.plot(validation_df.index, y_pred_val_xgb, label="XGBoost Predictions", alpha=0.5, color='red')
-    
+    ax1.plot(validation_df.index, y_pred_val, label="Predictions using frequency data", alpha=0.5, color='red')
     ax1.set_xlabel("Timestamp")
-    ax1.set_ylabel("Carbon Intensity")
-
-    # remove the long movign average
-
-    ax2.plot(validation_df.index, validation_df['CARBON_INTENSITY'] - validation_df['CARBON_INTENSITY'].rolling('12h').mean(), label="True Values", color='black')
-    # turn into series
-    y_pred_val_xgb = pd.Series(y_pred_val_xgb, index=validation_df.index)
-    corrected = y_pred_val_xgb - y_pred_val_xgb.rolling('12h').mean()
-    smoothed = corrected.rolling('1h').mean()
-    ax2.plot(validation_df.index, smoothed, label="XGBoost Predictions", alpha=0.5, color='red')
-
-    # smooth the data
+    ax1.set_ylabel("Carbon Intensity (gCO2/kWh)")
     
+    # Detrended data plot
+    ax2.plot(validation_df.index, validation_df['CARBON_INTENSITY'] - validation_df['CARBON_INTENSITY'].rolling('12h').mean(), 
+             label="True Values", color='black')
+    
+    # Convert to series for rolling calculations
+    y_pred_val_series = pd.Series(y_pred_val, index=validation_df.index)
+    corrected = y_pred_val_series - y_pred_val_series.rolling('12h').mean()
+    smoothed = corrected.rolling('1h').mean()
+    ax2.plot(validation_df.index, smoothed, label="Predictions using frequency data", alpha=0.5, color='red')
 
     ax2.set_xlabel("Timestamp")
-    ax2.set_ylabel("Carbon Intensity")
-    ax2.set_title("Carbon Intensity - detrended (12h moving average removed)")
+    ax2.set_ylabel("Carbon Intensity (Detrended)")
 
-    fig.suptitle("Grid frequency data can be used to predict carbon intensity",
-            
-            x=0.02,
-            horizontalalignment='left',
-            verticalalignment='bottom',
-            fontsize=12,
-            fontweight='bold',
-            transform=fig.transFigure)
+    text = f'Predictions for {validation_df.index[0].strftime("%B %Y")}'
 
-    # remove the spines
+    ax1.set_title(text,  
+                loc='left',
+                x=0.02,
+                y=0.9,
+                transform=fig.transFigure)
+    
+    ax2.set_title("Detrended Carbon Intensity - local minima are captured",
+                loc='left',
+                x=0.02,
+                y=0.40,
+                transform=fig.transFigure)
+    
+    fig.suptitle("FREQUENCY DATA CONTAINS INFORMATION ABOUT CARBON INTENSITY",
+                x=0.02,
+                y=0.93, 
+                horizontalalignment='left', 
+                verticalalignment='bottom',
+                fontsize=16,
+                fontweight='bold',
+                transform=fig.transFigure)
+
+    # Clean up plot aesthetics
     for ax in [ax1, ax2]:
         for spine in ['top', 'right']:
             ax.spines[spine].set_visible(False)
 
-    plt.subplots_adjust(left=0.07, right=0.95, top=0.9, bottom=0.15)
+    # rotate x-axis labels
+    for ax in [ax1, ax2]:
+        for label in ax.get_xticklabels():
+            label.set_rotation(45)
+            label.set_horizontalalignment('right')
+
+    # add a legend
+    ax1.legend(loc='upper left')
+    ax2.legend(loc='upper left')
+
+    plt.subplots_adjust(left=0.07, right=0.95, top=0.87, bottom=0.1, hspace=0.6)
     plt.savefig("plots/validation.png")
 
-    # scatter
-    y_pred_test_xgb = xgb_model.predict(X_test)
+def plot_scatter_comparison(y_test, y_pred_test):
+    """Create scatter plot comparing actual vs predicted values"""
     fig, ax = plt.subplots(figsize=(6, 6))
 
     # Create scatter plot
-    ax.scatter(y_test, y_pred_test_xgb, color="#16BAC5", alpha=0.5, zorder=2)
-    # plot a 1:1
+    ax.scatter(y_test, y_pred_test, color="#16BAC5", alpha=0.5, zorder=2)
     ax.plot([0, 300], [0, 300], color='gray', linestyle='--', zorder=3)
     
-
     # Configure axes
     ax.set_xlabel("Actual GB Carbon Intensity (gCO2/kWh)")
     ax.set_ylabel("Predicted GB Carbon Intensity (gCO2/kWh)")
@@ -168,22 +199,34 @@ def main():
     ax.yaxis.grid(color='gray', linestyle='dashed', zorder=0)
     ax.xaxis.grid(color='gray', linestyle='dashed', zorder=0)
 
-    # Set title above the figure
+    # Set title
     fig.suptitle("Grid frequency data can be used to predict carbon intensity",
-                x=0.02,
-                horizontalalignment='left',
-                verticalalignment='bottom',
-                fontsize=12,
-                fontweight='bold',
-                transform=fig.transFigure)
+                x=0.02, horizontalalignment='left', verticalalignment='bottom',
+                fontsize=12, fontweight='bold', transform=fig.transFigure)
 
-    # Adjust layout and save
     plt.tight_layout()
     plt.savefig("plots/scatter_xgb.png", dpi=300, bbox_inches='tight')
 
 
-
+def main():
+    # Process steps
+    fft_df = prepare_fft_data("2023-07-01", "2024-12-01")
+    fft_df = add_features(fft_df)
+    fft_df = merge_with_carbon_data(fft_df)
     
+    if fft_df is None:
+        logging.error("Failed to prepare dataset. Exiting.")
+        return
+    
+    # Train model and generate predictions
+    model, X_test, y_test, validation_df = train_model(fft_df, "2024-12-01")
+    y_pred_val = model.predict(validation_df.drop(columns=['CARBON_INTENSITY']))
+    y_pred_test = model.predict(X_test)
+    
+    # Create plots
+    plot_validation_results(validation_df, y_pred_val)
+    plot_scatter_comparison(y_test, y_pred_test)
+
 
 if __name__ == "__main__":
     main()

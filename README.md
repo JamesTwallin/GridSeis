@@ -1,4 +1,4 @@
-# to run the python
+# How to run this code
 
 I tend to have a bare essentials miniconda base env. I then make a conda env:
 
@@ -18,6 +18,3 @@ and use pip to manage the packages
 
 
 ![Diagram](/plots/fft_heatmap_december.png)
-
-
-![Diagram](/plots/validation.png)
