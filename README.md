@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14933750.svg)](https://doi.org/10.5281/zenodo.14933750)
+[![DOI](https://zenodo.org/badge/398899394.svg)](https://doi.org/10.5281/zenodo.14933301)
 
 # GridSeis
 
