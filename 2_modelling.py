@@ -183,8 +183,12 @@ def plot_scatter_comparison(y_test, y_pred_test):
     """Create scatter plot comparing actual vs predicted values"""
     fig, ax = plt.subplots(figsize=(6, 6))
 
+    from scipy import stats
+    slope, intercept, r_value, p_value, std_err = stats.linregress(y_test, y_pred_test)
+    r2 = r_value**2
+
     # Create scatter plot
-    ax.scatter(y_test, y_pred_test, color="#16BAC5", alpha=0.5, zorder=2)
+    ax.scatter(y_test, y_pred_test, color="red", alpha=0.5, zorder=2, s=1, marker='.')
     ax.plot([0, 300], [0, 300], color='gray', linestyle='--', zorder=3)
     
     # Configure axes
@@ -198,11 +202,22 @@ def plot_scatter_comparison(y_test, y_pred_test):
     # Add grid
     ax.yaxis.grid(color='gray', linestyle='dashed', zorder=0)
     ax.xaxis.grid(color='gray', linestyle='dashed', zorder=0)
+     # Add R-squared text
+    ax.text(0.05, 0.95, f'R² = {r2:.3f}', transform=ax.transAxes, 
+            fontsize=12, fontweight='bold', 
+            bbox=dict(facecolor='white', alpha=0.7, edgecolor='none', pad=5))
 
     # Set title
-    fig.suptitle("Grid frequency data can be used to predict carbon intensity",
+    fig.suptitle("FREQUENCY DATA CONTAINS INFORMATION ABOUT CARBON INTENSITY",
                 x=0.02, horizontalalignment='left', verticalalignment='bottom',
-                fontsize=12, fontweight='bold', transform=fig.transFigure)
+                fontsize=10, fontweight='bold', transform=fig.transFigure)
+    
+    ax.set_title("Training a model using only frequency data provides good predictions",
+            loc='left',
+            x=0.02,
+            y=0.98,
+            fontdict={'fontsize': 8},
+            transform=fig.transFigure)
 
     plt.tight_layout()
     plt.savefig("plots/scatter_xgb.png", dpi=300, bbox_inches='tight')
