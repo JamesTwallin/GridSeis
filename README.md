@@ -50,7 +50,7 @@ Raw grid frequency data is collected at 1-second intervals from July 2023 throug
 
 Additional features are derived using rolling windows (1h, 3h, and 6h) to capture temporal patterns in the frequency domain. This approach helps identify both immediate and longer-term relationships between grid frequency characteristics and carbon intensity.
 
-The XGBoost model is trained with a standard 80/20 train-test split. A separate validation dataset from after December 2024 is used for final model evaluation, ensuring the model can generalize to future data points.
+The XGBoost model is trained with a standard 80/20 train-test split. A separate validation dataset from after December 2024 is used for final model evaluation, ensuring the model can generalise to future data points.
 
 
 ## Key Findings
