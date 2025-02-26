@@ -28,14 +28,6 @@ The validation plot demonstrates both overall trend prediction and the ability t
 
 ## Methodology: GB Grid Frequency Analysis
 
-The approach involves:
-
-1. Collecting raw grid frequency data (1-second resolution)
-2. Processing data in 30-minute blocks (1800 data points)
-3. Applying FFT to extract frequency components
-4. Creating derived features using rolling windows
-5. Training an XGBoost model to predict carbon intensity
-
 The FFT heatmaps below show how frequency signatures vary across different time periods:
 
 ![January FFT Heatmap](/plots/fft_heatmap_january.png)
@@ -43,6 +35,23 @@ The FFT heatmaps below show how frequency signatures vary across different time 
 ![December FFT Heatmap](/plots/fft_heatmap_december.png)
 
 These visualisations reveal seasonal patterns in grid frequency that correspond to changes in the energy generation mix and associated carbon intensity.
+
+It's possible to see that the grid becomes 'noisier' with greater penetration of renewable sources. This increase in frequency variation appears to correlate with periods of lower carbon intensity. The model leverages these subtle patterns to make predictions without requiring direct access to generation mix data.
+
+Model training involves:
+
+1. Collecting raw grid frequency data (1-second resolution)
+2. Processing data in 30-minute blocks (1800 data points)
+3. Applying FFT to extract frequency components
+4. Creating derived features using rolling windows
+5. Training an XGBoost model to predict carbon intensity
+
+Raw grid frequency data is collected at 1-second intervals from July 2023 through December 2024. For each 30-minute block (1800 data points), an FFT analysis is performed to decompose the time-domain signal into its frequency components. These components form the foundation of the feature set.
+
+Additional features are derived using rolling windows (1h, 3h, and 6h) to capture temporal patterns in the frequency domain. This approach helps identify both immediate and longer-term relationships between grid frequency characteristics and carbon intensity.
+
+The XGBoost model is trained with a standard 80/20 train-test split. A separate validation dataset from after December 2024 is used for final model evaluation, ensuring the model can generalize to future data points.
+
 
 ## Key Findings
 
