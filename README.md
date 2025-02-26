@@ -2,11 +2,11 @@
 
 # GridSeis
 
-Using grid frequency data to predict carbon intensity through FFT analysis and machine learning.
+Using grid frequency data to predict carbon intensity through FFT analysis and machine learning. The name "GridSeis" nods to geophysics, where frequency analysis techniques are used to transform 1D times signals into the frequency domain.
 
 ## Summary
 
-This project demonstrates how the frequency data from the Great Britain electrical grid contains embedded information about carbon intensity. By using Fast Fourier Transform (FFT) to decompose 1D time series frequency data into its constituent frequencies, we can extract features that allow us to predict carbon intensity with remarkable accuracy.
+This project demonstrates how the frequency data from the Great Britain electrical grid contains embedded information about carbon intensity. By using Fast Fourier Transform (FFT) to decompose 1D time series frequency data into its constituent frequencies, we can extract features that allow us to predict carbon intensity with high accuracy.
 
 ![Model Performance](/plots/scatter_xgb.png)
 
@@ -62,7 +62,7 @@ This technique offers several practical applications:
 
 ## How to Run This Code
 
-I tend to have a bare essentials miniconda base env. I then make a conda env:
+I've created a minimal environment with miniconda. I make a conda env:
 
 ```bash
 conda create -n grid_seis python=3.12
@@ -101,4 +101,4 @@ The project uses:
 
 ## License
 
-This project is open-source and available under the MIT License.
+This project is open-source and available under the [MIT License](LICENSE).
