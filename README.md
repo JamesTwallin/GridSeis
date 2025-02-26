@@ -34,7 +34,7 @@ The FFT heatmaps below show how frequency signatures vary across different time 
 
 ![December FFT Heatmap](/plots/fft_heatmap_december.png)
 
-These visualisations reveal seasonal patterns in grid frequency that correspond to changes in the energy generation mix and associated carbon intensity.
+These visualisations reveal patterns in grid frequency that correspond to changes in the energy generation mix and associated carbon intensity.
 
 It's possible to see that the grid becomes 'noisier' with greater penetration of renewable sources. This increase in frequency variation appears to correlate with periods of lower carbon intensity. The model leverages these subtle patterns to make predictions without requiring direct access to generation mix data.
 
