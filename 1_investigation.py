@@ -4,13 +4,10 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# Machine Learning
-from sklearn.model_selection import train_test_split
-import xgboost as xgb
 from matplotlib.colorbar import ColorbarBase
 from matplotlib.colors import Normalize
 
-from helpers import get_raw_frequency_data, perform_fft_analysis, get_national_grid_data, apply_bandpass_filter
+from helpers import get_raw_frequency_data, perform_fft_analysis, get_national_grid_data
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
