@@ -1,3 +1,6 @@
+
+[![DOI](https://zenodo.org/badge/398899394.svg)](https://doi.org/10.5281/zenodo.14933301)
+
 # How to run this code
 
 I tend to have a bare essentials miniconda base env. I then make a conda env:
