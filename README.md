@@ -2,7 +2,7 @@
 
 # GridSeis
 
-Using grid frequency data to predict carbon intensity through FFT analysis and machine learning. The name "GridSeis" nods to geophysics, where frequency analysis techniques are used to transform 1D times signals into the frequency domain.
+"GridSeis" uses FFT analysis and machine learning to predict carbon intensity through 1d grid frequency data alone. The name "GridSeis" nods to geophysics, where frequency analysis techniques are used to transform 1D times signals into the frequency domain.
 
 ## Summary
 
