@@ -1,48 +1,104 @@
-
 [![DOI](https://zenodo.org/badge/398899394.svg)](https://doi.org/10.5281/zenodo.14933301)
-
 
 # GridSeis
 
+Using grid frequency data to predict carbon intensity through FFT analysis and machine learning.
+
 ## Summary
 
-![Diagram](/plots/scatter_xgb.png)
+This project demonstrates how the frequency data from the Great Britain electrical grid contains embedded information about carbon intensity. By using Fast Fourier Transform (FFT) to decompose 1D time series frequency data into its constituent frequencies, we can extract features that allow us to predict carbon intensity with remarkable accuracy.
 
-![Diagram](/plots/validation.png)
+![Model Performance](/plots/scatter_xgb.png)
+
+The scatter plot above shows the strong correlation between actual and predicted carbon intensity values, with an R² value demonstrating the predictive power of frequency data alone.
+
+![Validation Results](/plots/validation.png)
+
+The validation plot demonstrates both overall trend prediction and the ability to capture local minima in carbon intensity, even when using only grid frequency data as input.
 
 ## Background: Fourier Transforms
 
-![Fourier Transform visualisation](plots/fourier.png)
+<div style="display: flex; align-items: center;">
+  <img src="plots/fourier.png" alt="Fourier Transform visualization" width="300">
+  <div style="margin-left: 20px;">
+    <p>A Fourier transform decomposes a signal into its constituent frequencies, converting a time-domain signal into its frequency-domain representation. This mathematical technique is central to this project's methodology.</p>
+    <p>The key insight is that GB grid frequency variations contain patterns that correlate with carbon intensity. These subtle variations can be captured and quantified through frequency spectrum analysis.</p>
+  </div>
+</div>
 
-A Fourier transform is a mathematical technique that decomposes a signal into its constituent frequencies. It converts a signal from its original domain (often time) into a representation in the frequency domain.
+## Methodology: GB Grid Frequency Analysis
 
-In the image, you can see how a complex signal (likely in the time domain) is broken down into its frequency components, revealing the dominant frequencies that make up the original waveform.
+The approach involves:
 
-## Methodology: GB Grid Frequency
+1. Collecting raw grid frequency data (1-second resolution)
+2. Processing data in 30-minute blocks (1800 data points)
+3. Applying FFT to extract frequency components
+4. Creating derived features using rolling windows
+5. Training an XGBoost model to predict carbon intensity
 
+The FFT heatmaps below show how frequency signatures vary across different time periods:
 
-![Diagram](/plots/fft_heatmap_january.png)
+![January FFT Heatmap](/plots/fft_heatmap_january.png)
 
+![December FFT Heatmap](/plots/fft_heatmap_december.png)
 
-![Diagram](/plots/fft_heatmap_december.png)
+These visualisations reveal seasonal patterns in grid frequency that correspond to changes in the energy generation mix and associated carbon intensity.
 
+## Key Findings
 
+- Grid frequency data contains significant information about carbon intensity
+- The relationship is detectable through FFT analysis
+- Even without access to generation mix data, carbon intensity can be predicted
+- Local minima in carbon intensity (e.g., periods of high renewable penetration) are detectable from frequency data alone
 
+## Applications
 
-<!-- ![Diagram](/plots/fourier.png) -->
+This technique offers several practical applications:
 
+- Real-time carbon intensity estimation without direct access to generation data
+- Enhanced grid monitoring using existing frequency measurements
+- Potential for early detection of changes in generation mix
+- Alternative method for carbon intensity estimation in regions with limited data
 
-
-
-# How to run this code
+## How to Run This Code
 
 I tend to have a bare essentials miniconda base env. I then make a conda env:
 
-`conda create -n grid_seis python=3.12`
+```bash
+conda create -n grid_seis python=3.12
+```
 
-and use pip to manage the packages
+and use pip to manage the packages:
 
-`pip install -r requirements.txt`
+```bash
+pip install -r requirements.txt
+```
 
-to create plots, run `1_investigation.py`
-to train the model run `2_modelling.py`
+To create plots, run:
+```bash
+python 1_investigation.py
+```
+
+To train the model run:
+```bash
+python 2_modelling.py
+```
+
+## Dependencies
+
+See `requirements.txt` for full list of dependencies. Key packages include:
+- pandas
+- numpy
+- matplotlib
+- scikit-learn
+- xgboost
+
+## Data Sources
+
+The project uses:
+- GB grid frequency data (1-second resolution)
+- Carbon intensity data from National Grid
+
+## License
+
+This project is open-source and available under [LICENSE].
