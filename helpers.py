@@ -43,8 +43,8 @@ def perform_fft_analysis(data_source):
    
    freq_dict = {}
    for freq, mag in zip(freq_bins, magnitudes):
-        # Ignore the DC component
-        if freq > 0.1:
+        # Ignore the lower frequency stuff
+        if freq > 0.05:
             freq_dict[f"{freq:.4f}"] = mag
    
 

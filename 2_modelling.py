@@ -55,9 +55,7 @@ def main():
         for window in ['1h', '3h', '6h']
     })
 
-    # # sine day of year
-    # result_df['sin_day'] = np.sin(2 * np.pi * result_df.index.dayofyear / 365)
-    # result_df['cos_day'] = np.cos(2 * np.pi * result_df.index.dayofyear / 365)
+
 
     # second of day
     fft_df['sin_second'] = np.sin(2 * np.pi * fft_df.index.second / 86400)
@@ -126,8 +124,23 @@ def main():
 
     ax2.set_xlabel("Timestamp")
     ax2.set_ylabel("Carbon Intensity")
-    ax2.set_title("Carbon Intensity - 12h Moving Average")
-    plt.tight_layout()
+    ax2.set_title("Carbon Intensity - detrended (12h moving average removed)")
+
+    fig.suptitle("Grid frequency data can be used to predict carbon intensity",
+            
+            x=0.02,
+            horizontalalignment='left',
+            verticalalignment='bottom',
+            fontsize=12,
+            fontweight='bold',
+            transform=fig.transFigure)
+
+    # remove the spines
+    for ax in [ax1, ax2]:
+        for spine in ['top', 'right']:
+            ax.spines[spine].set_visible(False)
+            
+    plt.subplots_adjust(left=0.07, right=0.95, top=0.9, bottom=0.15)
     plt.savefig("validation.png")
 
     # scatter
