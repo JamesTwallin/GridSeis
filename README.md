@@ -64,10 +64,9 @@ The XGBoost model is trained with a standard 80/20 train-test split. A separate 
 
 This technique offers several practical applications:
 
-- Real-time carbon intensity estimation without direct access to generation data
-- Enhanced grid monitoring using existing frequency measurements
-- Potential for early detection of changes in generation mix
-- Alternative method for carbon intensity estimation in regions with limited data
+- Real-time crude carbon intensity estimation without direct access to generation data
+- Alternative method for carbon intensity estimation in regions with limited connectivity
+- Offline smart devices being able to preferentially use electricity in times of clean power abundance.
 
 ## How to Run This Code
 
