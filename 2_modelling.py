@@ -1,6 +1,7 @@
 import pandas as pd
 import logging
 import numpy as np
+import os
 
 import matplotlib.pyplot as plt
 
@@ -19,6 +20,8 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 
 
 def main():
+    if not os.path.exists("plots"):
+        os.makedirs("plots")
     rows = []
     for date in pd.date_range("2023-07-01", "2024-12-01", freq="1MS"):
         df = get_raw_frequency_data(date.year, date.month)
@@ -139,9 +142,9 @@ def main():
     for ax in [ax1, ax2]:
         for spine in ['top', 'right']:
             ax.spines[spine].set_visible(False)
-            
+
     plt.subplots_adjust(left=0.07, right=0.95, top=0.9, bottom=0.15)
-    plt.savefig("validation.png")
+    plt.savefig("plots/validation.png")
 
     # scatter
     y_pred_test_xgb = xgb_model.predict(X_test)
@@ -176,7 +179,7 @@ def main():
 
     # Adjust layout and save
     plt.tight_layout()
-    plt.savefig("scatter_xgb.png", dpi=300, bbox_inches='tight')
+    plt.savefig("plots/scatter_xgb.png", dpi=300, bbox_inches='tight')
 
 
 

@@ -125,7 +125,7 @@ if __name__ == "__main__":
     ax1.set_title('FFT Analysis: Frequency Components Over Time')
     
     plt.tight_layout()
-    fig.savefig('fft_heatmap.png', dpi=300)
+    fig.savefig('plots/fft_heatmap.png', dpi=300)
     
     # Process January data
     fft_df_jan = fft_df.loc['2025-01-22':'2025-01-31']
@@ -133,7 +133,7 @@ if __name__ == "__main__":
     carbon_df_jan.index = carbon_df_jan.index.strftime('%Y-%m-%dT%H:%M:%SZ')
     
     # Create January plot
-    create_combined_plot(fft_df_jan, carbon_df_jan, 'Jan 22-31, 2025', 'fft_heatmap_january.png')
+    create_combined_plot(fft_df_jan, carbon_df_jan, 'Jan 22-31, 2025', 'plots/fft_heatmap_january.png')
     
     # Process December data
     fft_df_dec = fft_df.loc['2024-12-01':'2024-12-31']
@@ -141,4 +141,4 @@ if __name__ == "__main__":
     carbon_df_dec.index = carbon_df_dec.index.strftime('%Y-%m-%dT%H:%M:%SZ')
     
     # Create December plot
-    create_combined_plot(fft_df_dec, carbon_df_dec, 'Dec 1-31, 2024', 'fft_heatmap_december.png')
+    create_combined_plot(fft_df_dec, carbon_df_dec, 'Dec 1-31, 2024', 'plots/fft_heatmap_december.png')

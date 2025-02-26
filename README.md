@@ -10,14 +10,14 @@ and use pip to manage the packages
 
 # What is this?
 
-![Diagram](/scatter_xgb.png)
+![Diagram](/plots/scatter_xgb.png)
 
-![Diagram](/validation.png)
+![Diagram](/plots/validation.png)
 
-![Diagram](/fft_heatmap_january.png)
-
-
-![Diagram](/fft_heatmap_december.png)
+![Diagram](/plots/fft_heatmap_january.png)
 
 
-![Diagram](/validation.png)
+![Diagram](/plots/fft_heatmap_december.png)
+
+
+![Diagram](/plots/validation.png)
