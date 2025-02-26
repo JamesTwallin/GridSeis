@@ -215,7 +215,7 @@ def plot_scatter_comparison(y_test, y_pred_test):
     ax.set_title("Training a model using only frequency data provides good predictions",
             loc='left',
             x=0.02,
-            y=0.98,
+            y=0.95,
             fontdict={'fontsize': 8},
             transform=fig.transFigure)
 

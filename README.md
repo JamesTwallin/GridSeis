@@ -4,15 +4,35 @@
 
 # GridSeis
 
+## Summary
 
 ![Diagram](/plots/scatter_xgb.png)
 
 ![Diagram](/plots/validation.png)
 
+## Background: Fourier Transforms
+<div style="display: flex; align-items: center;">
+  <img src="plots/fourier.png" alt="Fourier Transform visualization" width="300">
+  <div style="margin-left: 20px;">
+    <p>A Fourier transform is a mathematical technique that decomposes a signal into its constituent frequencies. It converts a signal from its original domain (often time) into a representation in the frequency domain.</p>
+    <p>In the image, you can see how a complex signal (likely in the time domain) is broken down into its frequency components, revealing the dominant frequencies that make up the original waveform.</p>
+  </div>
+</div>
+
+## Methodology: GB Grid Frequency
+
+
 ![Diagram](/plots/fft_heatmap_january.png)
 
 
 ![Diagram](/plots/fft_heatmap_december.png)
+
+
+
+
+<!-- ![Diagram](/plots/fourier.png) -->
+
+
 
 
 # How to run this code
