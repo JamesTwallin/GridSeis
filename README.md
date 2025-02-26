@@ -28,11 +28,11 @@ The validation plot demonstrates both overall trend prediction and the ability t
 
 ## Methodology: GB Grid Frequency Analysis
 
-The FFT heatmaps below show how frequency signatures vary across different time periods:
+The FFT spectrograms below show how frequency signatures vary across different time periods:
 
-![January FFT Heatmap](/plots/fft_heatmap_january.png)
+![January FFT Spectrogram](/plots/fft_heatmap_january.png)
 
-![December FFT Heatmap](/plots/fft_heatmap_december.png)
+![December FFT Spectrogram](/plots/fft_heatmap_december.png)
 
 These visualisations reveal patterns in grid frequency that correspond to changes in the energy generation mix and associated carbon intensity.
 
