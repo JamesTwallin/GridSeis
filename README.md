@@ -105,7 +105,7 @@ See `requirements.txt` for full list of dependencies. Key packages include:
 
 The project uses:
 <!-- link -->
--  [GB grid frequency data (1-second resolution)](https://www.neso.energy/industry-information/balancing-services/frequency-response-services/historic-frequency-data)
+-  [GB grid frequency data (1-second resolution)](https://www.neso.energy/data-portal/system-frequency-data)
 - [Carbon intensity data from National Grid](https://www.neso.energy/data-portal/historic-generation-mix)
 
 
