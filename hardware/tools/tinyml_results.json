@@ -1,0 +1,40 @@
+{
+ "check_float": {
+  "2024": 0.8,
+  "2025": 0.727,
+  "2026": 0.66,
+  "all": 0.737
+ },
+ "check_int8": {
+  "2024": 0.8,
+  "2025": 0.727,
+  "2026": 0.66,
+  "all": 0.737
+ },
+ "check_int8_station_out_dirtier": 0.932,
+ "check_int8_turbine_out_cleaner": 0.928,
+ "check_int8_gco2_by_fifth": [
+  180.0,
+  153.0,
+  129.0,
+  104.0,
+  81.0
+ ],
+ "final_bytes": 12064,
+ "final_parameters": 3777,
+ "position_scale": [
+  0.17991355061531067,
+  0.4988512098789215,
+  0.8382335901260376
+ ],
+ "ops": [
+  "CONV_2D",
+  "DELEGATE",
+  "EXPAND_DIMS",
+  "FULLY_CONNECTED",
+  "PACK",
+  "RESHAPE",
+  "SHAPE",
+  "STRIDED_SLICE"
+ ]
+}

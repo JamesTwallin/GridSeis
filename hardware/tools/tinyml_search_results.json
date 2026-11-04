@@ -1,0 +1,40 @@
+{
+ "weighted sum (current firmware)": {
+  "2024": 0.79,
+  "2025": 0.726,
+  "2026": 0.649,
+  "all": 0.73
+ },
+ "A: 52 inputs, 32-16 network": {
+  "2024": 0.791,
+  "2025": 0.721,
+  "2026": 0.65,
+  "all": 0.729,
+  "spread_between_starts_all": 0.003,
+  "parameters": 2241
+ },
+ "A: 52 inputs, 64-32 network": {
+  "2024": 0.792,
+  "2025": 0.724,
+  "2026": 0.653,
+  "all": 0.731,
+  "spread_between_starts_all": 0.002,
+  "parameters": 5505
+ },
+ "B: 312 inputs, 32-16 network": {
+  "2024": 0.795,
+  "2025": 0.718,
+  "2026": 0.649,
+  "all": 0.729,
+  "spread_between_starts_all": 0.006,
+  "parameters": 10561
+ },
+ "B: 312 inputs, 1D convolution over the 24 hours": {
+  "2024": 0.798,
+  "2025": 0.725,
+  "2026": 0.653,
+  "all": 0.734,
+  "spread_between_starts_all": 0.008,
+  "parameters": 3777
+ }
+}

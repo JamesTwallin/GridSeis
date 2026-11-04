@@ -1,0 +1,5 @@
+## TensorFlow Lite Micro for the on-board network (nn.cc). Fetched once by the build on the PC;
+## the board itself never connects to anything.
+dependencies:
+  espressif/esp-tflite-micro: "~1.3.3"
+  idf: ">=5.0"

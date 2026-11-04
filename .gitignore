@@ -3,3 +3,22 @@
 *.idea
 *__pycache__
 *.pyc
+
+# ESP-IDF / PlatformIO build artifacts
+firmware/.pio/
+firmware/managed_components/
+firmware/dependencies.lock
+firmware/sdkconfig
+firmware/sdkconfig.*
+!firmware/sdkconfig.defaults
+firmware/build/
+
+# Accidental Windows device files
+nul
+
+# CSVs that are part of the repo, not data downloads
+!hardware/firmware/partitions.csv
+!hardware/tools/*.csv
+# primer figures and PDF are build outputs of scripts/primer (copies live in plots/primer and docs/)
+scripts/primer/*.png
+scripts/primer/*.pdf

@@ -1,0 +1,8 @@
+.pio/
+firmware/.pio/
+firmware/sdkconfig.*
+!firmware/sdkconfig.defaults
+firmware/.vscode/
+__pycache__/
+enclosure/.preview_cache.npy
+firmware/managed_components/

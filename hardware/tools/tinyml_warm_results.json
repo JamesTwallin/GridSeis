@@ -1,0 +1,39 @@
+{
+ "check_int8_by_hours_since_switch_on": {
+  "3 to 6 h": 0.179,
+  "6 to 12 h": 0.385,
+  "12 to 24 h": 0.364,
+  "1 to 2 days": 0.543,
+  "2 to 7 days": 0.673,
+  "over 7 days": 0.738
+ },
+ "check_int8_by_year_all_ages": {
+  "2024": 0.753,
+  "2025": 0.664,
+  "2026": 0.629,
+  "all": 0.689
+ },
+ "check_int8_by_year_steady": {
+  "2024": 0.814,
+  "2025": 0.714,
+  "2026": 0.654,
+  "all": 0.738
+ },
+ "final_bytes": 12064,
+ "final_parameters": 3777,
+ "position_scale": [
+  0.1939014196395874,
+  0.5016145706176758,
+  0.821973443031311
+ ],
+ "ops": [
+  "CONV_2D",
+  "DELEGATE",
+  "EXPAND_DIMS",
+  "FULLY_CONNECTED",
+  "PACK",
+  "RESHAPE",
+  "SHAPE",
+  "STRIDED_SLICE"
+ ]
+}

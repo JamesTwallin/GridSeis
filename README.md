@@ -2,113 +2,92 @@
 
 # GridSeis
 
-"GridSeis" uses FFT analysis and machine learning to predict carbon intensity through 1d grid frequency data alone. The name "GridSeis" nods to geophysics, where frequency analysis techniques are used to transform 1D times signals into the frequency domain.
+The frequency of the GB electricity grid, nominally 50 Hz, wobbles all the time. How it wobbles depends on
+what is generating: a grid run on gas and nuclear is heavy with spinning machines and moves slowly; a grid
+run on wind and solar is light and rings. So the frequency, which can be measured at any socket, carries
+information about how clean the grid is. GridSeis is three things built on that idea, all from NESO's
+published one-second frequency record:
 
-## Summary
+1. **A primer** on how the frequency behaves as the generation mix changes.
+2. **A digest** of what the frequency signal contains, including a carbon-from-frequency model.
+3. **The weather house**: a plug-in gauge that listens to the mains hum on a short wire and runs a small
+   neural network on an ESP32-S3, with no internet, to show whether the grid is cleaner or dirtier than
+   usual for the week.
 
-This project demonstrates how the frequency data from the Great Britain electrical grid contains embedded information about carbon intensity. By using Fast Fourier Transform (FFT) to decompose 1D time series frequency data into its constituent frequencies, we can extract features that allow us to predict carbon intensity with high accuracy.
+The name nods to geophysics, where the same frequency analysis is used on seismic signals.
 
-![Model Performance](/plots/scatter_xgb.png)
+## The weather house
 
-The scatter plot above shows the strong correlation between actual and predicted carbon intensity values, with an R² value demonstrating the predictive power of frequency data alone.
+[hardware/](hardware/) is a carbon gauge in the style of the Austrian weather houses, the ones where a
+figure with an umbrella comes out when rain is coming. An ESP32-S3-Zero picks up the 50 Hz field around a
+mains cable with a 20 cm wire, measures the grid frequency once a second, and every 5 minutes turns the
+last half hour into a spectrum. A small network, trained on five years of NESO data and run on the chip
+with TensorFlow Lite Micro, reads 13 bands of that spectrum, each compared with the board's own last seven
+days, and a servo walks a wind turbine out of one door when the grid is cleaner than usual for the week
+and a power station out of the other when it is dirtier. Nothing touches the mains and nothing goes
+online.
 
-![Validation Results](/plots/validation.png)
+![The weather house in its three positions](hardware/images/weather_house.png)
 
-The validation plot demonstrates both overall trend prediction and the ability to capture local minima in carbon intensity, even when using only grid frequency data as input.
+Tested on 2024 to September 2026, years it never saw in training, the network's reading follows the real
+week with a match of 0.74 (1 would be perfect); when the power station is fully out the grid is dirtier
+than the middle of its week 93% of the time, and when the turbine is fully out it is cleaner 93% of the
+time. The [hardware README](hardware/README.md) has the parts, wiring, 3D-printable enclosure, firmware,
+the tests behind those numbers and how to retrain the network.
 
-## Background: Fourier Transforms
+![On-board network against real cleanliness](hardware/images/tinyml_check.png)
 
-<div style="display: flex; align-items: center;">
-  <img src="plots/fourier.png" alt="Fourier Transform visualization" width="300">
-  <div style="margin-left: 20px;">
-    <p>A Fourier transform decomposes a signal into its constituent frequencies, converting a time-domain signal into its frequency-domain representation. This mathematical technique is central to this project's methodology.</p>
-    <p>The key insight is that GB grid frequency variations contain patterns that correlate with carbon intensity. These subtle variations can be captured and quantified through frequency spectrum analysis.</p>
-  </div>
-</div>
+## The primer
 
-## Methodology: GB Grid Frequency Analysis
+[docs/grid_frequency_primer.pdf](docs/grid_frequency_primer.pdf): a short illustrated primer on how the
+frequency behaves as the generation mix changes, 2021 to 2026. Its last figure is the idea the weather
+house is built on: the ringing of the frequency at 4 to 10 second periods tracks carbon intensity.
 
-The FFT spectrograms below show how frequency signatures vary across different time periods:
+![Ringing against carbon intensity, 2021 to 2026](plots/primer/fig7_ringing_vs_carbon.png)
 
-![January FFT Spectrogram](/plots/fft_heatmap_january.png)
+Figures are in `plots/primer/` and the code in `scripts/primer/`: `build_stats.py` makes the half-hour
+statistics from the one-second data, `main.py` draws the figures, `waves_plot.py` draws the one half hour
+split into waves, and `make_pdf.py` assembles the PDF.
 
-![December FFT Spectrogram](/plots/fft_heatmap_december.png)
+## The digest
 
-These visualisations reveal patterns in grid frequency that correspond to changes in the energy generation mix and associated carbon intensity.
+[docs/listening_to_the_grid.pdf](docs/listening_to_the_grid.pdf), nine pages: what the grid frequency is
+and why it moves, how the signal is split into waves, why a light grid rings, a single 5 MW machine that
+can be heard inside that ringing, how that machine reads the grid's inertia, why the ringing is a carbon
+gauge, how well a model given nothing but the frequency signal predicts carbon intensity on unseen months
+(about half of the half-hour variation over 2025 to 2026), and whether the same test works on Continental
+Europe, Ireland and the Nordic area. Sections 7 to 9 are the background to the weather house. The
+investigation behind the digest (the 0.258 Hz hum, the search of distribution-network data for its
+source, and the other-grid tests) is kept outside the repository.
 
-It's possible to see that the grid becomes 'noisier' with greater penetration of renewable sources. This increase in frequency variation appears to correlate with periods of lower carbon intensity. The model leverages these subtle patterns to make predictions without requiring direct access to generation mix data.
+## Data
 
-Model training involves:
+All of it is public.
 
-1. Collecting raw grid frequency data (1-second resolution)
-2. Processing data in 30-minute blocks (1800 data points)
-3. Applying FFT to extract frequency components
-4. Creating derived features using rolling windows
-5. Training an XGBoost model to predict carbon intensity
+| Dataset | Source |
+|---|---|
+| GB system frequency, one-second readings, July 2021 to September 2026 | [NESO data portal](https://www.neso.energy/data-portal/system-frequency-data), fetched by `scripts/fetch_frequency.py` into a folder outside the repository (`D:/gridseis_hum/freq_parquet` in the scripts) |
+| Historic generation mix and carbon intensity, half-hourly, 2009 to 2026 | [NESO data portal](https://www.neso.energy/data-portal/historic-generation-mix) (`df_fuel_ckan.csv`) |
+| System inertia outturn, half-hourly, April 2022 onward | NESO data portal, "GB System Inertia" yearly files (primer figure 3) |
 
-Raw grid frequency data is collected at 1-second intervals from July 2023 through December 2024. For each 30-minute block (1800 data points), an FFT analysis is performed to decompose the time-domain signal into its frequency components. These components form the foundation of the feature set.
-
-Additional features are derived using rolling windows (1h, 3h, and 6h) to capture temporal patterns in the frequency domain. This approach helps identify both immediate and longer-term relationships between grid frequency characteristics and carbon intensity.
-
-The XGBoost model is trained with a standard 80/20 train-test split. A separate validation dataset from after December 2024 is used for final model evaluation, ensuring the model can generalise to future data points.
-
-
-## Key Findings
-
-- Grid frequency data contains significant information about carbon intensity
-- The relationship is detectable through FFT analysis
-- Even without access to generation mix data, carbon intensity can be predicted
-- Local minima in carbon intensity (e.g., periods of high renewable penetration) are detectable from frequency data alone
-
-## Applications
-
-This technique offers several practical applications:
-
-- Real-time crude carbon intensity estimation without direct access to generation data
-- Alternative method for carbon intensity estimation in regions with limited connectivity
-- Offline smart devices being able to preferentially use electricity in times of clean power abundance.
-
-## How to Run This Code
-
-I've created a minimal environment with miniconda. I make a conda env:
+## Running the code
 
 ```bash
 conda create -n grid_seis python=3.12
-```
-
-and use pip to manage the packages:
-
-```bash
 pip install -r requirements.txt
+python scripts/fetch_frequency.py D:/gridseis_hum/freq_csv D:/gridseis_hum/freq_parquet 2026-9   # one month
 ```
 
-To create plots, run:
-```bash
-python 1_investigation.py
-```
+The weather house firmware builds with PlatformIO (`hardware/firmware`, see the hardware README), and
+the network is trained with TensorFlow in a separate environment (`hardware/tools/tinyml_train.py`).
 
-To train the model run:
-```bash
-python 2_modelling.py
-```
+## History
 
-## Dependencies
-
-See `requirements.txt` for full list of dependencies. Key packages include:
-- pandas
-- numpy
-- matplotlib
-- scikit-learn
-- xgboost
-
-## Data Sources
-
-The project uses:
-<!-- link -->
--  [GB grid frequency data (1-second resolution)](https://www.neso.energy/data-portal/system-frequency-data)
-- [Carbon intensity data from National Grid](https://www.neso.energy/data-portal/historic-generation-mix)
-
+GridSeis began in 2025 as an XGBoost model predicting carbon intensity from 30-minute spectra of the
+frequency. That version is kept as it was on the branch `archive/original-gridseis` (tag
+`archive-original-gridseis`) and in the Zenodo record above. The digest's model is its successor, and
+the weather house carries the idea onto a device.
 
 ## License
 
-This project is open-source and available under the [MIT License](LICENSE).
+[MIT](LICENSE).

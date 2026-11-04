@@ -1,0 +1,88 @@
+{
+ "host_test": {
+  "strong pickup": {
+   "adc_amplitude_counts": 300,
+   "harmonic_counts": 450,
+   "noise_counts": 20,
+   "valid_share": 0.999988425925926,
+   "freq_error_mhz_sd": 1.723856255713491,
+   "freq_error_mhz_mean": -0.0003566592205831733,
+   "ringing_truth_c_vs_numpy_max_rel_diff": 9.318422493461367e-05,
+   "ringing_recovered_over_truth_median": 0.9338950015718328
+  },
+  "typical pickup": {
+   "adc_amplitude_counts": 60,
+   "harmonic_counts": 90,
+   "noise_counts": 20,
+   "valid_share": 0.999988425925926,
+   "freq_error_mhz_sd": 2.923166292383474,
+   "freq_error_mhz_mean": -0.0003431636940094234,
+   "ringing_truth_c_vs_numpy_max_rel_diff": 9.318422493461367e-05,
+   "ringing_recovered_over_truth_median": 1.422320693496053
+  },
+  "weak pickup": {
+   "adc_amplitude_counts": 15,
+   "harmonic_counts": 25,
+   "noise_counts": 20,
+   "valid_share": 0.999988425925926,
+   "freq_error_mhz_sd": 9.778059663782171,
+   "freq_error_mhz_mean": -0.00029082512526725456,
+   "ringing_truth_c_vs_numpy_max_rel_diff": 9.318422493461367e-05,
+   "ringing_recovered_over_truth_median": 4.33037488905834
+  }
+ },
+ "gauge_check": {
+  "0 mHz": {
+   "n": 17472,
+   "rank_corr": -0.48701298385168074,
+   "ci_when_turbine_out": 72.0,
+   "ci_when_station_out": 174.0,
+   "ci_by_fifth": [
+    174.0,
+    150.0,
+    124.0,
+    97.0,
+    72.0
+   ]
+  },
+  "1 mHz": {
+   "n": 17472,
+   "rank_corr": -0.4843164676304107,
+   "ci_when_turbine_out": 72.0,
+   "ci_when_station_out": 173.0,
+   "ci_by_fifth": [
+    173.0,
+    151.0,
+    123.0,
+    98.5,
+    72.0
+   ]
+  },
+  "2 mHz": {
+   "n": 17472,
+   "rank_corr": -0.4743166232133849,
+   "ci_when_turbine_out": 72.0,
+   "ci_when_station_out": 171.0,
+   "ci_by_fifth": [
+    171.0,
+    150.0,
+    124.5,
+    100.0,
+    72.0
+   ]
+  },
+  "5 mHz": {
+   "n": 17472,
+   "rank_corr": -0.3920273954238577,
+   "ci_when_turbine_out": 75.0,
+   "ci_when_station_out": 160.0,
+   "ci_by_fifth": [
+    160.0,
+    148.0,
+    127.0,
+    105.0,
+    75.0
+   ]
+  }
+ }
+}

@@ -1,9 +1,13 @@
+# primer, fetch script and weather house tools (python 3.12)
 pandas
 pyarrow
-requests
-matplotlib
 numpy
 scipy
-seaborn
-scikit-learn
-xgboost
+matplotlib
+requests
+xgboost          # hardware/tools/fft_model_test.py, one comparison
+reportlab        # scripts/primer/make_pdf.py
+pillow           # scripts/primer/make_pdf.py
+manifold3d       # hardware/enclosure/build_enclosure.py
+ziglang          # compiles the firmware's C for the PC tests (hardware/tools/desk_check.py, check_model_c.py)
+# the on-board network is trained in a separate environment: tensorflow-cpu==2.17.*, numpy<2, pyarrow==17

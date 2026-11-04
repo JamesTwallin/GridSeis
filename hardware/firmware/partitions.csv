@@ -1,0 +1,7 @@
+# Name,    Type, SubType, Offset,   Size
+# nvs keeps the default place and size, so the saved ringing history survives the change.
+# model holds the spectrum model's week of band history (about 33 KB, saved every hour).
+nvs,       data, nvs,     0x9000,   0x6000,
+phy_init,  data, phy,     0xf000,   0x1000,
+factory,   app,  factory, 0x10000,  0x180000,
+model,     data, nvs,     0x190000, 0x20000,

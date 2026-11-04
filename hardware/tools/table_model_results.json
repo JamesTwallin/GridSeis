@@ -1,0 +1,988 @@
+{
+ "2.5 mHz": {
+  "time of day only (8 blocks)": {
+   "fixed": {
+    "typical_error_g": 63.649084445636866,
+    "share_explained": -0.42649742532239676
+   },
+   "updating": {
+    "typical_error_g": 37.371982360904575,
+    "share_explained": 0.46327718819673447
+   },
+   "per_year": {
+    "2022": {
+     "fixed": {
+      "typical_error_g": 55.97180706521739,
+      "share_explained": -0.01360624437303759
+     },
+     "updating": {
+      "typical_error_g": 38.18093511145465,
+      "share_explained": 0.47071041177951223
+     },
+     "mean_ci": 188.34465579710144
+    },
+    "2023": {
+     "fixed": {
+      "typical_error_g": 59.44275114155251,
+      "share_explained": -0.2874258464256747
+     },
+     "updating": {
+      "typical_error_g": 39.353891846673534,
+      "share_explained": 0.4062084716752794
+     },
+     "mean_ci": 149.02260273972604
+    },
+    "2024": {
+     "fixed": {
+      "typical_error_g": 71.36310336976321,
+      "share_explained": -0.9669996402608947
+     },
+     "updating": {
+      "typical_error_g": 35.85782485946315,
+      "share_explained": 0.42582354083584395
+     },
+     "mean_ci": 124.00295992714025
+    },
+    "2025": {
+     "fixed": {
+      "typical_error_g": 68.66552511415524,
+      "share_explained": -0.9075847034541569
+     },
+     "updating": {
+      "typical_error_g": 35.39483868439901,
+      "share_explained": 0.4326641808550262
+     },
+     "mean_ci": 126.85416666666667
+    },
+    "2026": {
+     "fixed": {
+      "typical_error_g": 57.39900801220908,
+      "share_explained": -0.5707718517361573
+     },
+     "updating": {
+      "typical_error_g": 38.85023885187522,
+      "share_explained": 0.26605331670827714
+     },
+     "mean_ci": 141.82586798931706
+    }
+   }
+  },
+  "rank only (5 bands)": {
+   "fixed": {
+    "typical_error_g": 59.06386746260648,
+    "share_explained": -0.2737967325448949
+   },
+   "updating": {
+    "typical_error_g": 29.63362809873423,
+    "share_explained": 0.6326217149146682
+   },
+   "per_year": {
+    "2022": {
+     "fixed": {
+      "typical_error_g": 47.48890398550725,
+      "share_explained": 0.22055106450834971
+     },
+     "updating": {
+      "typical_error_g": 29.37943019712777,
+      "share_explained": 0.665185431226155
+     },
+     "mean_ci": 188.34465579710144
+    },
+    "2023": {
+     "fixed": {
+      "typical_error_g": 51.73441780821918,
+      "share_explained": -0.047385629832098264
+     },
+     "updating": {
+      "typical_error_g": 29.525982710402328,
+      "share_explained": 0.6286155042628769
+     },
+     "mean_ci": 149.02260273972604
+    },
+    "2024": {
+     "fixed": {
+      "typical_error_g": 67.32340050091075,
+      "share_explained": -0.7905638112189863
+     },
+     "updating": {
+      "typical_error_g": 27.245168751973143,
+      "share_explained": 0.6403468278164361
+     },
+     "mean_ci": 124.00295992714025
+    },
+    "2025": {
+     "fixed": {
+      "typical_error_g": 67.85896118721462,
+      "share_explained": -0.8539072902679472
+     },
+     "updating": {
+      "typical_error_g": 29.599782697791174,
+      "share_explained": 0.5717361314717436
+     },
+     "mean_ci": 126.85416666666667
+    },
+    "2026": {
+     "fixed": {
+      "typical_error_g": 53.83292636398321,
+      "share_explained": -0.4250268394083492
+     },
+     "updating": {
+      "typical_error_g": 33.195966770919235,
+      "share_explained": 0.4196543064799977
+     },
+     "mean_ci": 141.82586798931706
+    }
+   }
+  },
+  "rank only (10 bands)": {
+   "fixed": {
+    "typical_error_g": 58.62177208397612,
+    "share_explained": -0.2599228058449401
+   },
+   "updating": {
+    "typical_error_g": 32.618635150454594,
+    "share_explained": 0.5615344192984375
+   },
+   "per_year": {
+    "2022": {
+     "fixed": {
+      "typical_error_g": 46.74977355072464,
+      "share_explained": 0.24261968687190782
+     },
+     "updating": {
+      "typical_error_g": 32.35244936923711,
+      "share_explained": 0.5946823327561419
+     },
+     "mean_ci": 188.34465579710144
+    },
+    "2023": {
+     "fixed": {
+      "typical_error_g": 51.080650684931506,
+      "share_explained": -0.030695682914363864
+     },
+     "updating": {
+      "typical_error_g": 32.70064219031869,
+      "share_explained": 0.5514418820500273
+     },
+     "mean_ci": 149.02260273972604
+    },
+    "2024": {
+     "fixed": {
+      "typical_error_g": 66.98212659380692,
+      "share_explained": -0.7765148597934792
+     },
+     "updating": {
+      "typical_error_g": 30.222111985083743,
+      "share_explained": 0.5628826553922821
+     },
+     "mean_ci": 124.00295992714025
+    },
+    "2025": {
+     "fixed": {
+      "typical_error_g": 67.59206621004566,
+      "share_explained": -0.8415147455630667
+     },
+     "updating": {
+      "typical_error_g": 32.8760466015221,
+      "share_explained": 0.48127236473347623
+     },
+     "mean_ci": 126.85416666666667
+    },
+    "2026": {
+     "fixed": {
+      "typical_error_g": 53.50461655856543,
+      "share_explained": -0.41186263500398135
+     },
+     "updating": {
+      "typical_error_g": 35.556938075126595,
+      "share_explained": 0.344994715707584
+     },
+     "mean_ci": 141.82586798931706
+    }
+   }
+  },
+  "rank 5 x time 8": {
+   "fixed": {
+    "typical_error_g": 57.25965524180025,
+    "share_explained": -0.1932501508178459
+   },
+   "updating": {
+    "typical_error_g": 36.17473127699845,
+    "share_explained": 0.47701609917469145
+   },
+   "per_year": {
+    "2022": {
+     "fixed": {
+      "typical_error_g": 44.73709239130435,
+      "share_explained": 0.2943695031627499
+     },
+     "updating": {
+      "typical_error_g": 37.34164600129966,
+      "share_explained": 0.46399486403079493
+     },
+     "mean_ci": 188.34465579710144
+    },
+    "2023": {
+     "fixed": {
+      "typical_error_g": 49.98296232876712,
+      "share_explained": 0.03225882211815312
+     },
+     "updating": {
+      "typical_error_g": 37.82099899641274,
+      "share_explained": 0.430563623776253
+     },
+     "mean_ci": 149.02260273972604
+    },
+    "2024": {
+     "fixed": {
+      "typical_error_g": 65.18960610200364,
+      "share_explained": -0.683281983835101
+     },
+     "updating": {
+      "typical_error_g": 33.71349896232528,
+      "share_explained": 0.47136893489573617
+     },
+     "mean_ci": 124.00295992714025
+    },
+    "2025": {
+     "fixed": {
+      "typical_error_g": 66.19668949771689,
+      "share_explained": -0.7605301531996864
+     },
+     "updating": {
+      "typical_error_g": 36.17312557494788,
+      "share_explained": 0.3867083584724461
+     },
+     "mean_ci": 126.85416666666667
+    },
+    "2026": {
+     "fixed": {
+      "typical_error_g": 52.84887447539107,
+      "share_explained": -0.3373412525142985
+     },
+     "updating": {
+      "typical_error_g": 36.488982319725466,
+      "share_explained": 0.33102118218183474
+     },
+     "mean_ci": 141.82586798931706
+    }
+   }
+  },
+  "rank 5 x time 24": {
+   "fixed": {
+    "typical_error_g": 57.301160372929104,
+    "share_explained": -0.1973484887649377
+   },
+   "updating": {
+    "typical_error_g": 39.02473959808386,
+    "share_explained": 0.4035792498084202
+   },
+   "per_year": {
+    "2022": {
+     "fixed": {
+      "typical_error_g": 44.14781476449275,
+      "share_explained": 0.30943000794807907
+     },
+     "updating": {
+      "typical_error_g": 41.15436321843483,
+      "share_explained": 0.37150192847964525
+     },
+     "mean_ci": 188.34465579710144
+    },
+    "2023": {
+     "fixed": {
+      "typical_error_g": 50.01098744292238,
+      "share_explained": 0.03250623199903624
+     },
+     "updating": {
+      "typical_error_g": 41.133988845121074,
+      "share_explained": 0.3422413146808724
+     },
+     "mean_ci": 149.02260273972604
+    },
+    "2024": {
+     "fixed": {
+      "typical_error_g": 65.25039845173042,
+      "share_explained": -0.6918523012118216
+     },
+     "updating": {
+      "typical_error_g": 36.765024210387175,
+      "share_explained": 0.38747468484551073
+     },
+     "mean_ci": 124.00295992714025
+    },
+    "2025": {
+     "fixed": {
+      "typical_error_g": 66.46906392694063,
+      "share_explained": -0.7756005623551823
+     },
+     "updating": {
+      "typical_error_g": 38.87750463232618,
+      "share_explained": 0.2994916308217037
+     },
+     "mean_ci": 126.85416666666667
+    },
+    "2026": {
+     "fixed": {
+      "typical_error_g": 52.99900801220908,
+      "share_explained": -0.3473471296943076
+     },
+     "updating": {
+      "typical_error_g": 37.99577003746562,
+      "share_explained": 0.28414768462096796
+     },
+     "mean_ci": 141.82586798931706
+    }
+   }
+  },
+  "rank 10 x time 8": {
+   "fixed": {
+    "typical_error_g": 57.069313837279495,
+    "share_explained": -0.18813289144610734
+   },
+   "updating": {
+    "typical_error_g": 37.812563398658604,
+    "share_explained": 0.43354890862762574
+   },
+   "per_year": {
+    "2022": {
+     "fixed": {
+      "typical_error_g": 43.917289402173914,
+      "share_explained": 0.3174523690704921
+     },
+     "updating": {
+      "typical_error_g": 39.04457031981713,
+      "share_explained": 0.4173564693447651
+     },
+     "mean_ci": 188.34465579710144
+    },
+    "2023": {
+     "fixed": {
+      "typical_error_g": 49.56424086757991,
+      "share_explained": 0.04139151195779911
+     },
+     "updating": {
+      "typical_error_g": 39.79313926423939,
+      "share_explained": 0.37545011490197544
+     },
+     "mean_ci": 149.02260273972604
+    },
+    "2024": {
+     "fixed": {
+      "typical_error_g": 65.2114924863388,
+      "share_explained": -0.6870531731049101
+     },
+     "updating": {
+      "typical_error_g": 35.49911121745251,
+      "share_explained": 0.42465154581467845
+     },
+     "mean_ci": 124.00295992714025
+    },
+    "2025": {
+     "fixed": {
+      "typical_error_g": 66.22942351598174,
+      "share_explained": -0.759392782505458
+     },
+     "updating": {
+      "typical_error_g": 37.89766120404019,
+      "share_explained": 0.32887669484640214
+     },
+     "mean_ci": 126.85416666666667
+    },
+    "2026": {
+     "fixed": {
+      "typical_error_g": 52.805341472720336,
+      "share_explained": -0.33334942628675757
+     },
+     "updating": {
+      "typical_error_g": 37.321990340779536,
+      "share_explained": 0.30502095354300407
+     },
+     "mean_ci": 141.82586798931706
+    }
+   }
+  },
+  "rank 10 x time 24": {
+   "fixed": {
+    "typical_error_g": 57.11105372593735,
+    "share_explained": -0.19341298665364137
+   },
+   "updating": {
+    "typical_error_g": 39.695271933087604,
+    "share_explained": 0.38185968111798707
+   },
+   "per_year": {
+    "2022": {
+     "fixed": {
+      "typical_error_g": 43.39939990942029,
+      "share_explained": 0.32944206090556327
+     },
+     "updating": {
+      "typical_error_g": 41.650216640739785,
+      "share_explained": 0.36311145111776055
+     },
+     "mean_ci": 188.34465579710144
+    },
+    "2023": {
+     "fixed": {
+      "typical_error_g": 49.58858447488584,
+      "share_explained": 0.04058234859257859
+     },
+     "updating": {
+      "typical_error_g": 41.74282460525467,
+      "share_explained": 0.3194731957349629
+     },
+     "mean_ci": 149.02260273972604
+    },
+    "2024": {
+     "fixed": {
+      "typical_error_g": 65.21539162112933,
+      "share_explained": -0.6945585267871495
+     },
+     "updating": {
+      "typical_error_g": 37.923371489778425,
+      "share_explained": 0.3492908537638362
+     },
+     "mean_ci": 124.00295992714025
+    },
+    "2025": {
+     "fixed": {
+      "typical_error_g": 66.42765410958904,
+      "share_explained": -0.7735643026597308
+     },
+     "updating": {
+      "typical_error_g": 39.54791380577714,
+      "share_explained": 0.27031181634591483
+     },
+     "mean_ci": 126.85416666666667
+    },
+    "2026": {
+     "fixed": {
+      "typical_error_g": 53.089011827546734,
+      "share_explained": -0.3502488657180274
+     },
+     "updating": {
+      "typical_error_g": 38.212728392773556,
+      "share_explained": 0.27151709638899557
+     },
+     "mean_ci": 141.82586798931706
+    }
+   }
+  }
+ },
+ "0 mHz": {
+  "time of day only (8 blocks)": {
+   "fixed": {
+    "typical_error_g": 63.649084445636866,
+    "share_explained": -0.42649742532239676
+   },
+   "updating": {
+    "typical_error_g": 37.371982360904575,
+    "share_explained": 0.46327718819673447
+   },
+   "per_year": {
+    "2022": {
+     "fixed": {
+      "typical_error_g": 55.97180706521739,
+      "share_explained": -0.01360624437303759
+     },
+     "updating": {
+      "typical_error_g": 38.18093511145465,
+      "share_explained": 0.47071041177951223
+     },
+     "mean_ci": 188.34465579710144
+    },
+    "2023": {
+     "fixed": {
+      "typical_error_g": 59.44275114155251,
+      "share_explained": -0.2874258464256747
+     },
+     "updating": {
+      "typical_error_g": 39.353891846673534,
+      "share_explained": 0.4062084716752794
+     },
+     "mean_ci": 149.02260273972604
+    },
+    "2024": {
+     "fixed": {
+      "typical_error_g": 71.36310336976321,
+      "share_explained": -0.9669996402608947
+     },
+     "updating": {
+      "typical_error_g": 35.85782485946315,
+      "share_explained": 0.42582354083584395
+     },
+     "mean_ci": 124.00295992714025
+    },
+    "2025": {
+     "fixed": {
+      "typical_error_g": 68.66552511415524,
+      "share_explained": -0.9075847034541569
+     },
+     "updating": {
+      "typical_error_g": 35.39483868439901,
+      "share_explained": 0.4326641808550262
+     },
+     "mean_ci": 126.85416666666667
+    },
+    "2026": {
+     "fixed": {
+      "typical_error_g": 57.39900801220908,
+      "share_explained": -0.5707718517361573
+     },
+     "updating": {
+      "typical_error_g": 38.85023885187522,
+      "share_explained": 0.26605331670827714
+     },
+     "mean_ci": 141.82586798931706
+    }
+   }
+  },
+  "rank only (5 bands)": {
+   "fixed": {
+    "typical_error_g": 58.99372191293849,
+    "share_explained": -0.2654631437222885
+   },
+   "updating": {
+    "typical_error_g": 28.461154994990665,
+    "share_explained": 0.6555801348015144
+   },
+   "per_year": {
+    "2022": {
+     "fixed": {
+      "typical_error_g": 45.51177536231884,
+      "share_explained": 0.28651853880910216
+     },
+     "updating": {
+      "typical_error_g": 27.03154980290438,
+      "share_explained": 0.7102787802636421
+     },
+     "mean_ci": 188.34465579710144
+    },
+    "2023": {
+     "fixed": {
+      "typical_error_g": 51.2175799086758,
+      "share_explained": -0.028995502350948055
+     },
+     "updating": {
+      "typical_error_g": 28.174253001129408,
+      "share_explained": 0.6570768696056535
+     },
+     "mean_ci": 149.02260273972604
+    },
+    "2024": {
+     "fixed": {
+      "typical_error_g": 67.86987704918033,
+      "share_explained": -0.8050173731480732
+     },
+     "updating": {
+      "typical_error_g": 26.31858852341418,
+      "share_explained": 0.659127077597097
+     },
+     "mean_ci": 124.00295992714025
+    },
+    "2025": {
+     "fixed": {
+      "typical_error_g": 68.32357305936073,
+      "share_explained": -0.8602945451050683
+     },
+     "updating": {
+      "typical_error_g": 28.802878146129306,
+      "share_explained": 0.5896201489552106
+     },
+     "mean_ci": 126.85416666666667
+    },
+    "2026": {
+     "fixed": {
+      "typical_error_g": 54.103624570774514,
+      "share_explained": -0.42711991655589365
+     },
+     "updating": {
+      "typical_error_g": 32.22356736841011,
+      "share_explained": 0.44236935259695886
+     },
+     "mean_ci": 141.82586798931706
+    }
+   }
+  },
+  "rank only (10 bands)": {
+   "fixed": {
+    "typical_error_g": 58.79770608357368,
+    "share_explained": -0.2594394945791316
+   },
+   "updating": {
+    "typical_error_g": 31.411425592460276,
+    "share_explained": 0.5858649494315242
+   },
+   "per_year": {
+    "2022": {
+     "fixed": {
+      "typical_error_g": 44.764945652173914,
+      "share_explained": 0.30435086170394454
+     },
+     "updating": {
+      "typical_error_g": 30.001033000607844,
+      "share_explained": 0.6413161674402341
+     },
+     "mean_ci": 188.34465579710144
+    },
+    "2023": {
+     "fixed": {
+      "typical_error_g": 50.7976598173516,
+      "share_explained": -0.017022604615944292
+     },
+     "updating": {
+      "typical_error_g": 31.18607899411806,
+      "share_explained": 0.5841780292779215
+     },
+     "mean_ci": 149.02260273972604
+    },
+    "2024": {
+     "fixed": {
+      "typical_error_g": 67.88530282331512,
+      "share_explained": -0.8047173852073353
+     },
+     "updating": {
+      "typical_error_g": 29.1764337908636,
+      "share_explained": 0.583162337617257
+     },
+     "mean_ci": 124.00295992714025
+    },
+    "2025": {
+     "fixed": {
+      "typical_error_g": 68.28476027397261,
+      "share_explained": -0.85589339450813
+     },
+     "updating": {
+      "typical_error_g": 32.15772617354836,
+      "share_explained": 0.4986273214025394
+     },
+     "mean_ci": 126.85416666666667
+    },
+    "2026": {
+     "fixed": {
+      "typical_error_g": 54.0845478824876,
+      "share_explained": -0.42720283576293894
+     },
+     "updating": {
+      "typical_error_g": 34.66162090447735,
+      "share_explained": 0.36756019392454065
+     },
+     "mean_ci": 141.82586798931706
+    }
+   }
+  },
+  "rank 5 x time 8": {
+   "fixed": {
+    "typical_error_g": 56.4280099268898,
+    "share_explained": -0.1588027004487198
+   },
+   "updating": {
+    "typical_error_g": 34.88198619913438,
+    "share_explained": 0.5079955106658813
+   },
+   "per_year": {
+    "2022": {
+     "fixed": {
+      "typical_error_g": 42.01958786231884,
+      "share_explained": 0.37895774084019407
+     },
+     "updating": {
+      "typical_error_g": 34.17074043280403,
+      "share_explained": 0.5449993543145679
+     },
+     "mean_ci": 188.34465579710144
+    },
+    "2023": {
+     "fixed": {
+      "typical_error_g": 48.8640696347032,
+      "share_explained": 0.07525969508492258
+     },
+     "updating": {
+      "typical_error_g": 36.24673621984762,
+      "share_explained": 0.4695733139924061
+     },
+     "mean_ci": 149.02260273972604
+    },
+    "2024": {
+     "fixed": {
+      "typical_error_g": 64.82641734972678,
+      "share_explained": -0.6613946176324734
+     },
+     "updating": {
+      "typical_error_g": 32.74663268857598,
+      "share_explained": 0.4940353432118961
+     },
+     "mean_ci": 124.00295992714025
+    },
+    "2025": {
+     "fixed": {
+      "typical_error_g": 65.77140410958904,
+      "share_explained": -0.7320846803242391
+     },
+     "updating": {
+      "typical_error_g": 35.40639086550117,
+      "share_explained": 0.40355967320499897
+     },
+     "mean_ci": 126.85416666666667
+    },
+    "2026": {
+     "fixed": {
+      "typical_error_g": 52.50095383441435,
+      "share_explained": -0.31289670591250984
+     },
+     "updating": {
+      "typical_error_g": 35.69828707392094,
+      "share_explained": 0.3560236301633285
+     },
+     "mean_ci": 141.82586798931706
+    }
+   }
+  },
+  "rank 5 x time 24": {
+   "fixed": {
+    "typical_error_g": 56.606271379703536,
+    "share_explained": -0.1696094895474629
+   },
+   "updating": {
+    "typical_error_g": 37.79053516634097,
+    "share_explained": 0.4364753695235738
+   },
+   "per_year": {
+    "2022": {
+     "fixed": {
+      "typical_error_g": 41.23986639492754,
+      "share_explained": 0.3988808344884255
+     },
+     "updating": {
+      "typical_error_g": 37.888440559463035,
+      "share_explained": 0.4636221871885061
+     },
+     "mean_ci": 188.34465579710144
+    },
+    "2023": {
+     "fixed": {
+      "typical_error_g": 48.90099885844749,
+      "share_explained": 0.07111475248314347
+     },
+     "updating": {
+      "typical_error_g": 39.56217834217048,
+      "share_explained": 0.38479400007196984
+     },
+     "mean_ci": 149.02260273972604
+    },
+    "2024": {
+     "fixed": {
+      "typical_error_g": 65.10590277777777,
+      "share_explained": -0.6817360181722154
+     },
+     "updating": {
+      "typical_error_g": 36.02174000426428,
+      "share_explained": 0.41029520945243525
+     },
+     "mean_ci": 124.00295992714025
+    },
+    "2025": {
+     "fixed": {
+      "typical_error_g": 66.29900114155251,
+      "share_explained": -0.7600238082142234
+     },
+     "updating": {
+      "typical_error_g": 38.11927620730437,
+      "share_explained": 0.31616660748552594
+     },
+     "mean_ci": 126.85416666666667
+    },
+    "2026": {
+     "fixed": {
+      "typical_error_g": 52.91106447920641,
+      "share_explained": -0.33283849872757965
+     },
+     "updating": {
+      "typical_error_g": 37.287731770468994,
+      "share_explained": 0.30658158936351765
+     },
+     "mean_ci": 141.82586798931706
+    }
+   }
+  },
+  "rank 10 x time 8": {
+   "fixed": {
+    "typical_error_g": 56.1776779126702,
+    "share_explained": -0.15164568763653885
+   },
+   "updating": {
+    "typical_error_g": 36.49297214863145,
+    "share_explained": 0.4677030995796395
+   },
+   "per_year": {
+    "2022": {
+     "fixed": {
+      "typical_error_g": 41.12364130434783,
+      "share_explained": 0.3988272849868807
+     },
+     "updating": {
+      "typical_error_g": 35.93747359993536,
+      "share_explained": 0.5017393955309479
+     },
+     "mean_ci": 188.34465579710144
+    },
+    "2023": {
+     "fixed": {
+      "typical_error_g": 48.39049657534247,
+      "share_explained": 0.08817256337144219
+     },
+     "updating": {
+      "typical_error_g": 38.05253148452681,
+      "share_explained": 0.4225357544094904
+     },
+     "mean_ci": 149.02260273972604
+    },
+    "2024": {
+     "fixed": {
+      "typical_error_g": 64.85029599271402,
+      "share_explained": -0.6633618950303115
+     },
+     "updating": {
+      "typical_error_g": 34.61203974842757,
+      "share_explained": 0.4482831441580022
+     },
+     "mean_ci": 124.00295992714025
+    },
+    "2025": {
+     "fixed": {
+      "typical_error_g": 65.67360159817352,
+      "share_explained": -0.7275640779681081
+     },
+     "updating": {
+      "typical_error_g": 37.09753716526178,
+      "share_explained": 0.3478437245339039
+     },
+     "mean_ci": 126.85416666666667
+    },
+    "2026": {
+     "fixed": {
+      "typical_error_g": 52.41266692102251,
+      "share_explained": -0.30493176803246214
+     },
+     "updating": {
+      "typical_error_g": 36.49563715684326,
+      "share_explained": 0.3318281842488725
+     },
+     "mean_ci": 141.82586798931706
+    }
+   }
+  },
+  "rank 10 x time 24": {
+   "fixed": {
+    "typical_error_g": 56.50211281776108,
+    "share_explained": -0.16630994943787436
+   },
+   "updating": {
+    "typical_error_g": 38.420312112486336,
+    "share_explained": 0.4168833835387481
+   },
+   "per_year": {
+    "2022": {
+     "fixed": {
+      "typical_error_g": 40.438066123188406,
+      "share_explained": 0.41691431808393664
+     },
+     "updating": {
+      "typical_error_g": 38.45336216474271,
+      "share_explained": 0.4538903515358158
+     },
+     "mean_ci": 188.34465579710144
+    },
+    "2023": {
+     "fixed": {
+      "typical_error_g": 48.55376712328767,
+      "share_explained": 0.0802812633973492
+     },
+     "updating": {
+      "typical_error_g": 40.077886019824426,
+      "share_explained": 0.3682352851105788
+     },
+     "mean_ci": 149.02260273972604
+    },
+    "2024": {
+     "fixed": {
+      "typical_error_g": 65.32046903460838,
+      "share_explained": -0.6887761848300722
+     },
+     "updating": {
+      "typical_error_g": 37.16066385256234,
+      "share_explained": 0.3733553716339465
+     },
+     "mean_ci": 124.00295992714025
+    },
+    "2025": {
+     "fixed": {
+      "typical_error_g": 66.32853881278538,
+      "share_explained": -0.7592381563567014
+     },
+     "updating": {
+      "typical_error_g": 38.799221771917196,
+      "share_explained": 0.2886167126470105
+     },
+     "mean_ci": 126.85416666666667
+    },
+    "2026": {
+     "fixed": {
+      "typical_error_g": 52.99603204883632,
+      "share_explained": -0.332004078126809
+     },
+     "updating": {
+      "typical_error_g": 37.3641053577381,
+      "share_explained": 0.2960482998916806
+     },
+     "mean_ci": 141.82586798931706
+    }
+   }
+  }
+ },
+ "ways of updating, 2.5 mHz": {
+  "updated every half hour, step 0.02": {
+   "typical_error_g": 34.217744041926025,
+   "share_explained": 0.5286642497956013
+  },
+  "updated every half hour, step 0.05": {
+   "typical_error_g": 29.63362809873423,
+   "share_explained": 0.6326217149146682
+  },
+  "updated every half hour, step 0.1": {
+   "typical_error_g": 26.01389157521925,
+   "share_explained": 0.7084720351423126
+  },
+  "updated two weeks each quarter": {
+   "typical_error_g": 49.82618227727391,
+   "share_explained": -0.03208014425391292
+  },
+  "last month's average plus the rank band's offset": {
+   "typical_error_g": 44.64538517247557,
+   "share_explained": 0.2177620523556505
+  },
+  "last month's average alone": {
+   "typical_error_g": 51.67596080952597,
+   "share_explained": 0.04257103780600213
+  },
+  "no sensor: previous half hour from the internet": {
+   "typical_error_g": 5.09556643638071,
+   "share_explained": 0.9859001604718046
+  }
+ },
+ "rank_offsets_g": [
+  42.71428571428571,
+  33.60147849462365,
+  13.774193548387103,
+  -22.070833333333326,
+  -62.45347222222222
+ ],
+ "table_trained_2021_22": [
+  223.0,
+  217.0,
+  196.0,
+  156.5,
+  112.0
+ ]
+}
